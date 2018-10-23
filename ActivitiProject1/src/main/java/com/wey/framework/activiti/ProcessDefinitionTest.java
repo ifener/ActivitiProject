@@ -4,7 +4,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.ZipInputStream;
 
 import org.activiti.engine.ProcessEngine;
@@ -130,6 +134,34 @@ ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
 			ops.write(bys);
 		}
 		ops.close();
+	}
+	
+	/**
+	 * 获取所有的流程定义（有效的）
+	 */
+	@Test
+	public void findAllProcessDefinitionPic() {
+		List<ProcessDefinition> list = processEngine.getRepositoryService().createProcessDefinitionQuery().orderByProcessDefinitionKey().asc().orderByProcessDefinitionVersion().asc().list();
+		Map<String,ProcessDefinition> maps = new LinkedHashMap<>(16);
+		if(list!=null && list.size()>0) {
+			for(ProcessDefinition pd:list) {
+				maps.put(pd.getKey(), pd);
+			}
+		}
 		
+		list = new ArrayList<>(maps.values());
+		if(list!=null && list.size()>0) {
+			for(ProcessDefinition pd:list) {
+				System.out.println("流程定义ID="+pd.getId());
+				//XML文件里面的name
+				// <process id="audit" name="审批" isExecutable="true">
+				System.out.println("流程定义NAME="+pd.getName()); 
+				System.out.println("流程定义KEY="+pd.getKey());
+				System.out.println("流程定义VERSION="+pd.getVersion());
+				System.out.println("流程定义BPMN="+pd.getResourceName());
+				System.out.println("流程定义PNG="+pd.getDiagramResourceName());
+				System.out.println("流程定义部署对象ID="+pd.getDeploymentId());
+			}
+		}
 	}
 }

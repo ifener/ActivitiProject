@@ -15,7 +15,7 @@ public class DeployFlow {
 
 	ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
 	
-	//@Test
+	@Test
 	public void deployProcessDefinition() {
 		
 		//与流程定义与部署相关的service
@@ -28,7 +28,7 @@ public class DeployFlow {
 		System.out.println(deployment.getName());
 	}
 	
-	//@Test
+	@Test
 	public void startProcessInstance() {
 		ProcessInstance processInstance = processEngine.getRuntimeService().startProcessInstanceByKey("audit");
 		System.out.println("ID="+processInstance.getId()+"流程定义ID="+processInstance.getProcessDefinitionId());
