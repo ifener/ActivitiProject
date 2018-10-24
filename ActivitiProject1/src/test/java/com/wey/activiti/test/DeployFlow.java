@@ -28,6 +28,9 @@ public class DeployFlow {
 		System.out.println(deployment.getName());
 	}
 	
+	/**
+	 * 启动一个流程
+	 */
 	@Test
 	public void startProcessInstance() {
 		ProcessInstance processInstance = processEngine.getRuntimeService().startProcessInstanceByKey("audit");
@@ -53,7 +56,7 @@ public class DeployFlow {
 	
 	@Test
 	public void auditProcessTask() {
-		String taskId="104";
+		String taskId="204";
 		processEngine.getTaskService().complete(taskId);
 		System.out.println("任务完成");
 	}

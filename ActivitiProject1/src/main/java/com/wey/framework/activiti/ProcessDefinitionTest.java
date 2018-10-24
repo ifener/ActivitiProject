@@ -14,10 +14,12 @@ import java.util.zip.ZipInputStream;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngines;
 import org.activiti.engine.RepositoryService;
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.DeploymentBuilder;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.repository.ProcessDefinitionQuery;
+import org.activiti.engine.runtime.ProcessInstance;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
@@ -161,6 +163,40 @@ ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
 				System.out.println("流程定义BPMN="+pd.getResourceName());
 				System.out.println("流程定义PNG="+pd.getDiagramResourceName());
 				System.out.println("流程定义部署对象ID="+pd.getDeploymentId());
+			}
+		}
+	}
+	
+	/**
+	 * 判断流程实例是否结束
+	 */
+	@Test
+	public void isProcessEnd(){
+        String		processInstanceId="processEngine";
+        //查询正在执行的对象
+		ProcessInstance pi = processEngine.getRuntimeService().createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
+		if(pi==null) {
+			System.out.println("流程已结束");
+		} else {
+			System.out.println("流程没有结束");
+		}
+	}
+	
+	
+	/**
+	 * 查询历史任务
+	 */
+	@Test
+	public void queryHistoryTask() {
+		List<HistoricTaskInstance> list = processEngine.getHistoryService() //历史相关的
+		             .createHistoricTaskInstanceQuery()//创建历史任务实例查询
+		             .taskAssignee("张三").list();
+		if(list!=null && list.size()>0) {
+			for(HistoricTaskInstance hti:list) {
+				System.out.println("办理人："+hti.getAssignee());
+				System.out.println("执行ID："+hti.getExecutionId());
+				System.out.println("名称："+hti.getName());
+				System.out.println("流程实例ID："+hti.getProcessInstanceId());
 			}
 		}
 	}
