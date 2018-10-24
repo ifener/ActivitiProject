@@ -19,7 +19,7 @@ public class DeployFlow {
 		//创建部署对象
 		DeploymentBuilder createDeployment = repositoryService.createDeployment();
 		
-		Deployment deployment = createDeployment.name("审批单流程").addClasspathResource("diagrams/audit.bpmn").addClasspathResource("diagrams/audit.png").deploy();
+		Deployment deployment = createDeployment.name("审批单流程").addClasspathResource("flows/audit.bpmn").addClasspathResource("diagrams/audit.png").deploy();
 		System.out.println(deployment.getId());
 		System.out.println(deployment.getName());
 	}
