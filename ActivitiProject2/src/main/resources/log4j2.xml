@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    status : 这个用于设置log4j2自身内部的信息输出,可以不设置,当设置成trace时,会看到log4j2内部各种详细输出
+    monitorInterval : Log4j能够自动检测修改配置文件和重新配置本身, 设置间隔秒数。
+-->
+<configuration status="error">
+    <!--先定义所有的appender-->
+    <!--trace<debug<info<warn<error<fatal-->
+
+    <!--http://logging.apache.org/log4j/2.x/manual/lookups.html-->
+
+    <properties>
+        <property name="LOG_HOME">${web:rootDir}</property>
+        <!-- 日志备份目录 -->
+        <property name="BACKUP_HOME">${LOG_HOME}/BackupLog</property>
+    </properties>
+
+    <appenders>
+        <!--这个输出控制台的配置-->
+        <Console name="Console" target="SYSTEM_OUT">
+            <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
+            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            <!--这个都知道是输出日志的格式-->
+            <PatternLayout pattern="[Console] %d{HH:mm:ss.SSS} %-5level %class{36} %F %L %M - %msg%xEx%n"/>
+        </Console>
+        <!--文件会打印出所有信息，这个log每次运行程序会自动清空，由append属性决定，这个也挺有用的，适合临时测试用-->
+        <File name="log" fileName="${log4j:configParentLocation}/log.log" append="false">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %F %L %M - %msg%xEx%n"/>
+            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            <!--<PatternLayout pattern="%d{yyyy.MM.dd 'at' HH:mm:ss z} %-5level %class{36} %L %M - %msg%xEx%n"/> -->
+        </File>
+
+        <!--这个会打印出所有的信息，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档-->
+        <RollingFile name="RollingFile" fileName="${log4j:configParentLocation}/logs/app-%d{MM-dd-yyyy}-%i.log"
+                     filePattern="${BACKUP_HOME}/logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.zip">
+            <PatternLayout pattern="%d{yyyy-MM-dd 'at' HH:mm:ss z} %-5level %class{36} %F %L %M - %msg%xEx%n"/>
+            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            <!-- 每个日志文件最大大小 -->
+            <SizeBasedTriggeringPolicy size="1M"/>
+            <!-- 历史备份日志最大数量，新的会替换旧的 -->
+            <DefaultRolloverStrategy max="3" />
+        </RollingFile>
+    </appenders>
+    <!--然后定义logger，只有定义了logger并引入的appender，appender才会生效-->
+    <loggers>
+        <!--建立一个默认的root的logger-->
+        <root level="trace">
+            <appender-ref ref="RollingFile"/>
+            <appender-ref ref="Console"/>
+            <appender-ref ref="log"/>
+        </root>
+        <!-- 异步输出 -->  
+       <AsyncLogger level="trace" includeLocation="true">
+			<AppenderRef ref="Console"/>
+		</AsyncLogger>
+
+        <!--我们只让这个logger输出trace信息，其他的都是error级别-->
+        <!--
+        additivity开启的话，由于这个logger也是满足root的，所以会被打印两遍。
+        不过root logger 的level是error，为什么Bar 里面的trace信息也被打印两遍呢
+        -->
+        <!--<logger name="cn.lsw.base.log4j2.Hello" level="trace" additivity="false">
+            <appender-ref ref="Console"/>
+        </logger>-->
+
+    </loggers>
+</configuration>
