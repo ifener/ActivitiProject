@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.wey</groupId>
@@ -28,6 +27,10 @@
 		<fastjson.version>1.2.47</fastjson.version>
 		<hibernate.version>5.2.10.Final</hibernate.version>
 		<ehcache.version>2.10.4</ehcache.version>
+		<ehcache.web.version>2.0.4</ehcache.web.version>
+		<commons-beanutils.version>1.9.3</commons-beanutils.version>
+		<activiti-engine.version>7-201802-EA</activiti-engine.version>
+		<activiti-spring.version>7-201802-EA</activiti-spring.version>
 	</properties>
 
 	<dependencies>
@@ -60,6 +63,12 @@
 			<artifactId>commons-net</artifactId>
 			<version>${commons-net.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>${commons-beanutils.version}</version>
+		</dependency>
+
 		<!-- fastjson -->
 		<dependency>
 			<groupId>com.alibaba</groupId>
@@ -72,7 +81,7 @@
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-slf4j-impl</artifactId>
 			<version>${log4j-slf4j-impl.version}</version>
-		</dependency>  
+		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -144,7 +153,7 @@
 			<artifactId>commons-fileupload</artifactId>
 			<version>${commons-fileupload.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
@@ -160,5 +169,18 @@
 			<artifactId>ehcache-web</artifactId>
 			<version>${ehcache.web.version}</version>
 		</dependency>
+
+		<!-- activiti -->
+		<dependency>
+			<groupId>org.activiti</groupId>
+			<artifactId>activiti-engine</artifactId>
+			<version>${activiti-engine.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.activiti</groupId>
+			<artifactId>activiti-spring</artifactId>
+			<version>${activiti-spring.version}</version>
+		</dependency>
+
 	</dependencies>
 </project>
