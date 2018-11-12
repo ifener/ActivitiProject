@@ -1,19 +1,19 @@
-package com.wey.framework.dao;
+package com.wey.framework.service;
 
 import java.io.Serializable;
 import java.util.List;
 
-public interface GenericDao<T,PK extends Serializable> {
+public interface GenericManager<T,PK extends Serializable> {
 	
-	public List<T> getAll();
+    public List<T> getAll();
 	
 	public List<T> getAllByIDs(@SuppressWarnings("unchecked") PK...paramArgs);
 	
 	public T get(PK id);
 	
-	public Object get(Class paramClass,Serializable paramSerializable);
+	public T get(PK id,boolean lazy);
 	
-	public void initialize(Object...paramArgs);
+	public Object get(Class paramClass,Serializable paramSerializable);
 	
 	public boolean exists(PK id);
 	
@@ -22,6 +22,4 @@ public interface GenericDao<T,PK extends Serializable> {
 	public void remove(@SuppressWarnings("unchecked") PK... ids);
 
 	public void removeByBulk(@SuppressWarnings("unchecked") PK...paramArgs);
-	
-	
 }
