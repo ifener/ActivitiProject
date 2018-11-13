@@ -271,6 +271,19 @@ public class GenericDaoImpl<T,PK extends Serializable> extends HibernateDaoSuppo
 		});
 	}
 	
+	protected Object findObject(final String hql,final Object...values){
+		return super.getHibernateTemplate().execute(new HibernateCallback<Object>() {
+
+			@Override
+			public Object doInHibernate(Session session) throws HibernateException {
+				@SuppressWarnings("rawtypes")
+				Query query = session.createQuery(hql);
+				setParameters(query, values);
+				return query.uniqueResult();
+			}
+		});
+	}
+	
 	protected void findPageBySql(Pagination page,String sql,Object...values){
 		if(null==page){
 			page = new Pagination(Pagination.DEFAULT_PAGE_INDEX, Pagination.DEFAULT_PAGE_SIZE);

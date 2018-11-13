@@ -19,5 +19,15 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 	void setMySessionFactory(SessionFactory sessionFactory) {
 		super.setSessionFactory(sessionFactory);
 	}
+
+	@Override
+	public User findUserByLoginId(String loginId) {
+		String hql="from User where loginId = ?";
+		Object obj = findObject(hql, new Object[] {loginId});
+		if(obj!=null) {
+			return (User)obj;
+		}
+		return null;
+	}
 	
 }

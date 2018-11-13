@@ -10,8 +10,6 @@ import com.wey.framework.service.impl.GenericManagerImpl;
 @Service
 public class RefundBillManagerImpl extends GenericManagerImpl<RefundBill, Long> implements RefundBillManager {
 
-	public RefundBillManagerImpl(RefundBillDao refundBillDao) {
-		super(refundBillDao);
-	}
+	
 	
 }

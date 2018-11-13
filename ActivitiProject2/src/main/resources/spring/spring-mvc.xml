@@ -11,7 +11,7 @@
 	http://www.springframework.org/schema/mvc 
 	http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
 	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
-                                          
+
 	<context:component-scan base-package="com.wey.framework.activiti.controller" />
 	<mvc:annotation-driven>
 		<mvc:message-converters register-defaults="true">
@@ -40,8 +40,23 @@
 		<property name="maxUploadSize" value="5242880"></property>
 	</bean>
 
-	<mvc:resources location="/WEB-INF/static/js/" mapping="/static/js/**"/>
-	<mvc:resources location="/WEB-INF/static/css/" mapping="/static/css/**"/>
-	<mvc:resources location="/WEB-INF/static/images/" mapping="/static/images/**"/>
+	<mvc:resources location="/WEB-INF/static/js/" mapping="/static/js/**" />
+	<mvc:resources location="/WEB-INF/static/css/" mapping="/static/css/**" />
+	<mvc:resources location="/WEB-INF/static/images/"
+		mapping="/static/images/**" />
+
+	<!--配置拦截器, 多个拦截器,顺序执行 -->
+	<mvc:interceptors>
+		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
+		<mvc:interceptor>
+			<!-- 匹配的是url路径， 如果不配置或/**,将拦截所有的Controller -->
+			<mvc:mapping path="/**" />
+			<mvc:exclude-mapping path="/login" />
+			<mvc:exclude-mapping path="/doLogin" />
+			<mvc:exclude-mapping path="/doLogin" />
+			<bean class="com.wey.framework.interceptor.LoginInterceptor"></bean>
+		</mvc:interceptor>
+
+	</mvc:interceptors>
 
 </beans>

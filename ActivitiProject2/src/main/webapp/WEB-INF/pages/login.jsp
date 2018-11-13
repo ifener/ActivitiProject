@@ -15,7 +15,7 @@
 	</script>
 </head>
 <body style="text-align:center;">
-	<form action="loginAction_login.action" method="post">
+	<form action="doLogin" method="post">
 		<table width="100%"  height="100%" border="0" cellspacing="0" cellpadding="0">
 		  <tr>
 		    <td bgcolor="#1075b1">&nbsp;</td>
@@ -29,23 +29,19 @@
 		        <td height="84"><table width="100%" border="0" cellspacing="0" cellpadding="0">
 		          <tr>
 		            <td width="381" height="84" background="${ctx}/static/images/login_06.gif">&nbsp;</td>
-		            <td width="200" valign="middle" background="${ctx}/static/images/login_07.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+		            <td width="200" valign="middle">
+		            <table width="100%" border="0" cellspacing="0" cellpadding="0">
 		              <tr>
 		                <td width="55" height="24" valign="bottom"><div align="right"><span class="STYLE3">用户名</span></div></td>
-		                <td width="10" valign="bottom">&nbsp;</td>
-		                <td height="24" colspan="2" valign="bottom">
-		                	<select name="name">
-		                		<option value="范冰冰">范冰冰</option>
-		                		<option value="冯小刚">冯小刚</option>
-		                		<option value="范冰冰经纪人">范冰冰经纪人</option>
-		                		<option value="冯小刚经纪人">冯小刚经纪人</option>
-		                		<option value="王中军">王中军</option>
-		                	</select><br/>  
-		                </td>
+		                <td><input type="text" name="loginId" /></td>
 		              </tr>
-		              
-		              <tr></tr>
-		            </table></td>
+                      <tr>
+		                <td width="55" height="24" valign="bottom"><div align="right"><span class="STYLE3">密码</span></div></td>
+		                <td><input type="password" name="loginPassword" /></td>
+		              </tr>		              
+		            </table>
+		            
+		            </td>
 		            <td width="26"><img src="${ctx}/static/images/login_08.gif" width="26" height="84"></td>
 		            <td width="67" background="${ctx}/static/images/login_09.gif">
 		            <table width="100%" border="0" cellspacing="0" cellpadding="0">

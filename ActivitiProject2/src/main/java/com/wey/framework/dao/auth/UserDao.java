@@ -4,5 +4,5 @@ import com.wey.framework.dao.GenericDao;
 import com.wey.framework.model.auth.User;
 
 public interface UserDao extends GenericDao<User, Long> {
-
+	User findUserByLoginId(String loginId);
 }

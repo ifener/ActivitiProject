@@ -16,7 +16,7 @@ public class GenericManagerImpl<T,PK extends Serializable> implements GenericMan
 
 	protected GenericDao<T,PK> genericDao;
 	
-	public GenericManagerImpl(GenericDao<T,PK> genericDao){
+	public void setGenericDao(GenericDao<T,PK> genericDao) {
 		this.genericDao = genericDao;
 	}
 	
