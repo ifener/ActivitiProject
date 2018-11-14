@@ -1,5 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<%@ include file="/WEB-INF/pages/taglib.jsp" %>
+<!doctype html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>菜单</title>
@@ -84,7 +85,7 @@ a {text-decoration:none;color:black}
 
 <table width="147" height="100%" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr>
-    <td height="23" background="images/main_34.gif"><div align="center" class="STYLE4" id="Menu1Parent"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <td height="23" background="${ctx}/static/images/main_34.gif"><div align="center" class="STYLE4" id="Menu1Parent"><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
         <td width="9%">&nbsp;</td>
         <td width="83%"><div align="center" class="STYLE4"><a href="#" onClick="expandIt('Menu1'); return false" >业务管理</a></div></td>
@@ -98,10 +99,10 @@ a {text-decoration:none;color:black}
         <tr>
           <td height="38"><table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr>
-              <td width="33" height="28"><img src="images/main_52.gif" width="28" height="28"></td>
+              <td width="33" height="28"><img src="${ctx}/static/images/main_52.gif" width="28" height="28"></td>
               <td width="99"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                   <tr>
-                    <td height="23" class="STYLE4" style="cursor:hand" onMouseOver="this.style.backgroundImage='url(images/tab_bg.gif)';this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#adb9c2'; "onmouseout="this.style.backgroundImage='url()';this.style.borderStyle='none'">
+                    <td height="23" class="STYLE4" style="cursor:hand" onMouseOver="this.style.backgroundImage='url(${ctx}/static/images/tab_bg.gif)';this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#adb9c2'; "onmouseout="this.style.backgroundImage='url()';this.style.borderStyle='none'">
                     	<a href="leaveBillAction_home.action" target="main">请假管理</a>
                     </td>
                   </tr>
@@ -114,7 +115,7 @@ a {text-decoration:none;color:black}
     </div></td>
   </tr>
   <tr>
-    <td height="23" background="images/main_34_1.gif"><div align="center" class="STYLE4" id="Menu2Parent"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <td height="23" background="${ctx}/static/images/main_34_1.gif"><div align="center" class="STYLE4" id="Menu2Parent"><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
         <td width="9%">&nbsp;</td>
         <td width="83%"><div align="center" class="STYLE4"><a href="#" onClick="expandIt('Menu2'); return false" >流程管理</a></div></td>
@@ -128,11 +129,11 @@ a {text-decoration:none;color:black}
         <tr>
           <td height="38"><table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr>
-              <td width="33" height="28"><img src="images/main_48.gif" width="28" height="28"></td>
+              <td width="33" height="28"><img src="${ctx}/static/images/main_48.gif" width="28" height="28"></td>
               <td width="99"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                   <tr>
-                    <td height="23" class="STYLE4" style="cursor:hand" onMouseOver="this.style.backgroundImage='url(images/tab_bg.gif)';this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#adb9c2'; "onmouseout="this.style.backgroundImage='url()';this.style.borderStyle='none'">
-                    	<a href="workflowAction_deployHome.action" target="main">部署管理</a>
+                    <td height="23" class="STYLE4" style="cursor:hand" onMouseOver="this.style.backgroundImage='url(${ctx}/static/images/tab_bg.gif)';this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#adb9c2'; "onmouseout="this.style.backgroundImage='url()';this.style.borderStyle='none'">
+                    	<a href="workflow/workflows" target="main">部署管理</a>
                     </td>
                   </tr>
               </table></td>
@@ -142,10 +143,10 @@ a {text-decoration:none;color:black}
         <tr>
           <td height="38"><table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr>
-              <td width="33" height="28"><img src="images/main_40.gif" width="28" height="28"></td>
+              <td width="33" height="28"><img src="${ctx}/static/images/main_40.gif" width="28" height="28"></td>
               <td width="99"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                   <tr>
-                    <td height="23" class="STYLE4" style="cursor:hand" onMouseOver="this.style.backgroundImage='url(images/tab_bg.gif)';this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#adb9c2'; "onmouseout="this.style.backgroundImage='url()';this.style.borderStyle='none'">
+                    <td height="23" class="STYLE4" style="cursor:hand" onMouseOver="this.style.backgroundImage='url(${ctx}/static/images/tab_bg.gif)';this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#adb9c2'; "onmouseout="this.style.backgroundImage='url()';this.style.borderStyle='none'">
 						<a href="workflowAction_listTask.action" target="main">任务管理</a>
 					</td>
                   </tr>
@@ -159,7 +160,7 @@ a {text-decoration:none;color:black}
   
   
   <tr>
-    <td height="19" background="images/main_69.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <td height="19" background="${ctx}/static/images/main_69.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
         <td width="1%">&nbsp;</td>
         <td width="99%" valign="bottom"><span class="STYLE3">刘洋(QQ:506069708)</span></td>

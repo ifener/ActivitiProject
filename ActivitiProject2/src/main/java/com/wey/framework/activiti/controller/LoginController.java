@@ -34,7 +34,7 @@ public class LoginController {
 			Context context = new Context();
 			context.setUser(user);
 			ContextUtil.setContext(context);
-			return "redirect:index";
+			return "redirect:main";
 		}
 		
 		return "login";

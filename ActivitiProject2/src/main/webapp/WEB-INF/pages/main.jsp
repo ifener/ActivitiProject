@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<!doctype html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>工作台</title>
 </head>
 <frameset rows="100px,*" cols="*">
 	<noframes>
@@ -11,10 +12,10 @@
 		</body>
 	</noframes>
 	
-	<frame name="top" src="loginAction_top.action" scrolling="No" noresize="noresize" >
+	<frame name="top" src="top" scrolling="No" noresize="noresize" >
 	<frameset cols="150,*">
-		 <frame name="left" src="loginAction_left.action" scrolling="No" noresize="noresize" >
-		 <frame src="loginAction_welcome.action" name="main" title="mainframe" scrolling="Yes" noresize="noresize"  />
+		 <frame name="left" src="left" scrolling="No" noresize="noresize" >
+		 <frame src="welcome" name="main" title="mainframe" scrolling="Yes" noresize="noresize"  />
 	</frameset>
 </frameset>
 

@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/pages/taglib.jsp" %>
+<!doctype html>
 <html>
 <head>
 <style type="text/css">
@@ -24,17 +26,17 @@ body {
 <body>
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
 	  <tr>
-	    <td height="57" background="${pageContext.request.contextPath }/images/main_03.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+	    <td height="57" background="${ctx}/static/images/main_03.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
 	      <tr>
-	        <td width="450" height="57" background="${pageContext.request.contextPath }/images/main_01.gif">&nbsp;</td>
+	        <td width="450" height="57" background="${ctx}/static/images/main_01.gif">&nbsp;</td>
 	        <td>&nbsp;</td>
 	        <td width="281" valign="bottom"><table width="100%" border="0" cellspacing="0" cellpadding="0">
 	          <tr>
-	            <td width="33" height="27"><img src="${pageContext.request.contextPath }/images/main_05.gif" width="33" height="27" /></td>
-	            <td width="448" background="${pageContext.request.contextPath }/images/main_06.gif"><table width="425" border="0" align="center" cellpadding="0" cellspacing="0">
+	            <td width="33" height="27"><img src="${ctx}/static/images/main_05.gif" width="33" height="27" /></td>
+	            <td width="448" background="${ctx}/static/images/main_06.gif"><table width="425" border="0" align="center" cellpadding="0" cellspacing="0">
 	              <tr>
-	                <td><div align="right"><span class="STYLE6"><b>当前登录用户：${sessionScope.globle_user.name }</b></span></div></td>
-	                <td><div align="right"><a href="loginAction_logout.action" target="parent"><img src="${pageContext.request.contextPath }/images/quit.gif" width="69" height="17" /></a></div></td>
+	                <td><div align="right"><span class="STYLE6"><b>当前登录用户：${sessionScope.user.loginId }</b></span></div></td>
+	                <td><div align="right"><a href="loginAction_logout.action" target="parent"><img src="${ctx}/static/images/quit.gif" width="69" height="17" /></a></div></td>
 	              </tr>
 	            </table></td>
 	          </tr>
@@ -43,18 +45,18 @@ body {
 	    </table></td>
 	  </tr>
 	  <tr>
-	    <td height="40" background="${pageContext.request.contextPath }/images/main_10.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+	    <td height="40" background="${ctx}/static/images/main_10.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
 	      <tr>
-	        <td width="194" height="40" background="${pageContext.request.contextPath }/images/main_07.gif">&nbsp;</td>
+	        <td width="194" height="40" background="${ctx}/static/images/main_07.gif">&nbsp;</td>
 	        <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
 	          <tr>
-	            <td width="21"><img src="${pageContext.request.contextPath }/images/main_13.gif" width="19" height="14" /></td>
+	            <td width="21"><img src="${ctx}/static/images/main_13.gif" width="19" height="14" /></td>
 	            <td width="300" class="STYLE7">
 	            </td>
 	            <td>&nbsp;</td>
 	          </tr>
 	        </table></td>
-	        <td width="260" background="${pageContext.request.contextPath }/images/main_11.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+	        <td width="260" background="${ctx}/static/images/main_11.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
 	          <tr>
 	            <td width="16%"><span class="STYLE5"></span></td>
 	            <td width="84%"><div align="center"><span class="STYLE7">

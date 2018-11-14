@@ -97,7 +97,7 @@
 	<hr>
 	<br/>
 	<!-- 发布流程 -->
-	<form action="workflowAction_newdeploy.action" enctype="multipart/form-data" method="POST">
+	<form action="deploy" enctype="multipart/form-data" method="POST">
 		<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
 		  <tr>
 		    <td height="30"><table width="100%" border="0" cellspacing="0" cellpadding="0">
