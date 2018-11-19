@@ -40,6 +40,11 @@ public class GenericDaoImpl<T,PK extends Serializable> extends HibernateDaoSuppo
 	}
 	
 	
+	@Autowired
+	void setMySessionFactory(SessionFactory sessionFactory) {
+		super.setSessionFactory(sessionFactory);
+	}
+	
 	@Override
 	public List<T> getAll() {
 		return super.getHibernateTemplate().loadAll(persistentClass);
@@ -230,6 +235,9 @@ public class GenericDaoImpl<T,PK extends Serializable> extends HibernateDaoSuppo
 	
 	protected static String removeSelect(String hql){
 		int beginIndex = hql.toLowerCase().indexOf(" from ");
+		if(beginIndex==-1) {
+			beginIndex = hql.toLowerCase().indexOf("from ");
+		}
 		return hql.substring(beginIndex);
 	}
 	

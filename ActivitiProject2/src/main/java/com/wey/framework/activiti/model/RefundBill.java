@@ -13,7 +13,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import com.wey.framework.activiti.constants.WorkflowStatus;
 import com.wey.framework.model.BaseObject;
 import com.wey.framework.model.auth.User;
 
@@ -35,6 +37,8 @@ public class RefundBill extends BaseObject {
 	private String content;
 	
 	private Timestamp refundTime;
+	
+	private Long auditStatus;
 	
 	@Override
 	@Id
@@ -89,4 +93,55 @@ public class RefundBill extends BaseObject {
 	public void setRefundTime(Timestamp refundTime) {
 		this.refundTime = refundTime;
 	}
+
+	@Column(name="AUDIT_STATUS")
+	public Long getAuditStatus() {
+		return auditStatus;
+	}
+
+	public void setAuditStatus(Long auditStatus) {
+		this.auditStatus = auditStatus;
+	}
+	
+	@Override
+	@Column(name="CREATED_BY",nullable=true)
+	public Long getCreatedBy() {
+		return this.createdBy;
+	}
+
+	@Override
+	@Column(name="CREATED_DATE",nullable=true)
+	public Timestamp getCreatedDate() {
+		return this.createdDate;
+	}
+
+	@Override
+	@Column(name="UPDATED_BY",nullable=true)
+	public Long getUpdatedBy() {
+		return this.updatedBy;
+	}
+
+	@Override
+	@Column(name="UPDATED_DATE",nullable=true)
+	public Timestamp getUpdatedDate() {
+		return this.updatedDate;
+	}
+
+
+	@Override
+	@Column(name="ENABLED_FLAG",nullable=true)
+	public String getEnabledFlag() {
+		return this.enabledFlag;
+	}
+	
+	@Transient
+	public String getAuditDesc() {
+		if(this.auditStatus==null) {
+			return null;
+		}
+		return WorkflowStatus.getWorkflowName(this.auditStatus);
+			
+	}
+	
+	
 }

@@ -24,7 +24,9 @@ public class LoginInterceptor implements HandlerInterceptor {
 			return false;
 		}
 		Context context = new Context();
-		context.setUser((User)object);
+		User user = (User)object;
+		context.setUser(user);
+		context.setUserId(user.getId());
 		ContextUtil.setContext(context);
 		
 		return true;

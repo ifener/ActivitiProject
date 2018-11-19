@@ -1,12 +1,12 @@
 package com.wey.framework.dao.activiti.impl;
 
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.wey.framework.activiti.model.RefundBill;
 import com.wey.framework.dao.activiti.RefundBillDao;
 import com.wey.framework.dao.impl.GenericDaoImpl;
+import com.wey.framework.util.ContextUtil;
+import com.wey.framework.util.Pagination;
 
 @Repository
 public class RefundBillDaoImpl extends GenericDaoImpl<RefundBill, Long> implements RefundBillDao {
@@ -15,9 +15,13 @@ public class RefundBillDaoImpl extends GenericDaoImpl<RefundBill, Long> implemen
 		super(RefundBill.class);
 	}
 	
-	@Autowired
-	void setMySessionFactory(SessionFactory sessionFactory) {
-		super.setSessionFactory(sessionFactory);
+	
+
+	@Override
+	public void findByPage(Pagination page) {
+	    Long userId = ContextUtil.getContext().getUserId();
+	    String hql="from RefundBill where user.id=?";
+	    findPage(hql, page, userId);
 	}
 	
 }
