@@ -1,8 +1,13 @@
 package com.wey.framework.activiti.service;
 
 import java.io.InputStream;
+import java.util.List;
 import java.util.zip.ZipInputStream;
 
+import org.activiti.engine.task.Task;
+
+import com.wey.framework.activiti.model.TaskInfo;
+import com.wey.framework.activiti.model.Workflow;
 import com.wey.framework.util.Pagination;
 
 public interface WorkflowManager {
@@ -35,5 +40,12 @@ public interface WorkflowManager {
 	 */
 	void deleteProcessDefinition(String deploymentId);
 	
+	/**
+	 * 启动流程
+	 * @param workflow
+	 */
+	void start(Workflow workflow);
+	
+	List<TaskInfo> findTaskList(String assignee,String processDefinitionKey);
 	
 }

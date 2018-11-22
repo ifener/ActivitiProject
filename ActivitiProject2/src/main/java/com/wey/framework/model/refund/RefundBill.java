@@ -1,4 +1,4 @@
-package com.wey.framework.activiti.model;
+package com.wey.framework.model.refund;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;

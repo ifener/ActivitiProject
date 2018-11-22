@@ -1,5 +1,7 @@
 package com.wey.framework.dao.auth.impl;
 
+import java.util.List;
+
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -28,6 +30,12 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 			return (User)obj;
 		}
 		return null;
+	}
+
+	@Override
+	public List<User> findUserByDeptIdAndPositionId(Long departmentId, Long positionId) {
+		String hql="from User where departmentId=? and positionId=?";
+		return find(hql, new Object[] {departmentId,positionId});
 	}
 	
 }

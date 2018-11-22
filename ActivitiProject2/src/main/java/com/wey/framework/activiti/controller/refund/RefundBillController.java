@@ -1,6 +1,7 @@
 package com.wey.framework.activiti.controller.refund;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,8 +10,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.wey.framework.activiti.constants.WorkflowStatus;
-import com.wey.framework.activiti.model.RefundBill;
-import com.wey.framework.activiti.service.RefundBillManager;
+import com.wey.framework.activiti.model.TaskInfo;
+import com.wey.framework.bo.refund.RefundBillBO;
+import com.wey.framework.model.refund.RefundBill;
+import com.wey.framework.service.refund.RefundBillManager;
 import com.wey.framework.util.ContextUtil;
 import com.wey.framework.util.Pagination;
 
@@ -47,7 +50,23 @@ public class RefundBillController {
 	public String save(RefundBill refundBill) {
 		refundBill.setUser(ContextUtil.getContext().getUser());
 		refundBill.setAuditStatus(WorkflowStatus.SUBMIT.getCode());
-		refundBillManager.save(refundBill);
+		refundBillManager.saveAndStar(refundBill);
 		return "redirect:list";
+	}
+	
+	@RequestMapping("/taskList")
+	public String findTaskList(Pagination page,RefundBillBO refundBillBO,Model model) {
+		if(page==null) {
+			page = new Pagination();
+		}
+		
+		if(refundBillBO!=null) {
+			refundBillBO = new RefundBillBO();
+		}
+	
+		refundBillManager.findTaskList(page, refundBillBO);
+		
+		model.addAttribute("page", page);
+		return "refundBill/findTaskList";
 	}
 }

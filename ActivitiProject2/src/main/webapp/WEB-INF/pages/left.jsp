@@ -147,7 +147,7 @@ a {text-decoration:none;color:black}
               <td width="99"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                   <tr>
                     <td height="23" class="STYLE4" style="cursor:hand" onMouseOver="this.style.backgroundImage='url(${ctx}/static/images/tab_bg.gif)';this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#adb9c2'; "onmouseout="this.style.backgroundImage='url()';this.style.borderStyle='none'">
-						<a href="workflowAction_listTask.action" target="main">任务管理</a>
+						<a href="refundBill/taskList" target="main">任务管理</a>
 					</td>
                   </tr>
               </table></td>
@@ -163,7 +163,7 @@ a {text-decoration:none;color:black}
     <td height="19" background="${ctx}/static/images/main_69.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
         <td width="1%">&nbsp;</td>
-        <td width="99%" valign="bottom"><span class="STYLE3">刘洋(QQ:506069708)</span></td>
+        <td width="99%" valign="bottom"><span class="STYLE3"></span></td>
       </tr>
     </table></td>
   </tr>
