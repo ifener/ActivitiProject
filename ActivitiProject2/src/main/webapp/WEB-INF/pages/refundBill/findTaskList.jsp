@@ -51,7 +51,7 @@ table.list td{border:1px solid #cdc;}
 				       <td>${item.bizObj.refundAmount}</td>
 				       <td>${item.bizObj.auditDesc}</td>
 				       <td>
-				       	   <a href="">审批</a>
+				       	   <a href="audit/${item.bizObj.id}">审批</a>
 				       </td>
 				    </tr> 
 		      	</c:forEach>

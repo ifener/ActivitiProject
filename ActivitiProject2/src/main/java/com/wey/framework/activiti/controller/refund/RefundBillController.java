@@ -69,4 +69,12 @@ public class RefundBillController {
 		model.addAttribute("page", page);
 		return "refundBill/findTaskList";
 	}
+	
+	@RequestMapping("/audit/{id}")
+	public String audit(@PathVariable("id") Long id,Model model) {
+		RefundBill refundBill = refundBillManager.get(id);
+		model.addAttribute("refundBill", refundBill);
+		return "refundBill/audit";
+	}
+	
 }
