@@ -55,6 +55,7 @@
 
 	<mvc:resources location="/WEB-INF/static/js/" mapping="/static/js/**" />
 	<mvc:resources location="/WEB-INF/static/css/" mapping="/static/css/**" />
+	<mvc:resources location="/WEB-INF/static/fonts/" mapping="/static/fonts/**" />
 	<mvc:resources location="/WEB-INF/static/images/"
 		mapping="/static/images/**" />
 

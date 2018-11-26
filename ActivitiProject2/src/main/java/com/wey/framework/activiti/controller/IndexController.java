@@ -12,12 +12,7 @@ public class IndexController {
 	@GetMapping("/index")
 	public String index() {
 		String loginId = ContextUtil.getContext().getUser().getLoginId();
-		return "index:"+loginId;
-	}
-	
-	@GetMapping("/main")
-	public String main() {
-		return "main";
+		return "index";
 	}
 	
 	@GetMapping("/top")

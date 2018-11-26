@@ -1,12 +1,36 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/pages/taglib.jsp" %>
-<!doctype html>
-<html>
-<head>
-	<title>登录页面</title>
-	<link href="${ctx}/static/css/public.css" rel="stylesheet" type="text/css" />
-	<script type="text/javascript">
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>登录</title>
+    <!-- Animate.css -->
+    <link href="${ctx}/static/css/animate.min.css" rel="stylesheet">
+     <!-- Bootstrap core CSS -->
+     <link href="${ctx}/static/css/bootstrap.min.css" rel="stylesheet">
+
+     <link href="${ctx}/static/fonts/css/font-awesome.min.css" rel="stylesheet">
+     <link href="${ctx}/static/css/animate.min.css" rel="stylesheet">
+     <!-- Custom Theme Style -->
+     <link href="${ctx}/static/css/custom.min.css" rel="stylesheet">
+ 
+     <!-- NProgress -->
+     <link href="${ctx}/static/css/nprogress.css" rel="stylesheet">
+ 
+     <!-- jQuery -->
+     <script src="${ctx}/static/js/jquery.min.js"></script>
+     <!-- Bootstrap -->
+     <script src="${ctx}/static/js/bootstrap.min.js"></script>
+ 
+     <script type="text/javascript">
 		if(parent != window){
 			parent.location.href = window.location.href;
 		}
@@ -14,59 +38,77 @@
 			document.forms[0].submit();
 		}
 	</script>
-</head>
-<body style="text-align:center;">
-	<form action="doLogin" method="post">
-		<table width="100%"  height="100%" border="0" cellspacing="0" cellpadding="0">
-		  <tr>
-		    <td bgcolor="#1075b1">&nbsp;</td>
-		  </tr>
-		  <tr>
-		    <td height="608" background="${ctx}/static/images/login_03.gif"><table width="847" border="0" align="center" cellpadding="0" cellspacing="0">
-		      <tr>
-		        <td height="318" background="${ctx}/static/images/login_04.gif">&nbsp;</td>
-		      </tr>
-		      <tr>
-		        <td height="84"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-		          <tr>
-		            <td width="381" height="84" background="${ctx}/static/images/login_06.gif">&nbsp;</td>
-		            <td width="200" valign="middle">
-		            <table width="100%" border="0" cellspacing="0" cellpadding="0">
-		              <tr>
-		                <td width="55" height="24" valign="bottom"><div align="right"><span class="STYLE3">用户名</span></div></td>
-		                <td><input type="text" name="loginId" /></td>
-		              </tr>
-                      <tr>
-		                <td width="55" height="24" valign="bottom"><div align="right"><span class="STYLE3">密码</span></div></td>
-		                <td><input type="password" name="loginPassword" /></td>
-		              </tr>		              
-		            </table>
-		            
-		            </td>
-		            <td width="26"><img src="${ctx}/static/images/login_08.gif" width="26" height="84"></td>
-		            <td width="67" background="${ctx}/static/images/login_09.gif">
-		            <table width="100%" border="0" cellspacing="0" cellpadding="0">
-	              		<tr>
-	               			<td height="25"><div align="center" style="cursor:hand" onclick="func_login()"><img src="${ctx}/static/images/dl.gif" width="57" height="20"></div></td>
-	              		</tr>
-			            </table>
-            		</td>
-		            <td width="211" background="${ctx}/static/images/login_10.gif">&nbsp;</td>
-		          </tr>
-		        </table></td>
-		      </tr>
-		      <tr>
-		        <td height="206" background="${ctx}/static/images/login_11.gif">&nbsp;</td>
-		      </tr>
-		    </table></td>
-		  </tr>
-		  <tr>
-		    <td bgcolor="#152753">&nbsp;</td>
-		  </tr>
-		</table>
-	</form>
-	<script type="text/javascript">
-		document.getElementById("username").focus();
-	</script>
-</body>
+  </head>
+
+  <body class="login">
+    <div>
+      <a class="hiddenanchor" id="signup"></a>
+      <a class="hiddenanchor" id="signin"></a>
+
+      <div class="login_wrapper">
+        <div class="animate form login_form">
+          <section class="login_content">
+            <form action="doLogin" method="post">
+              <h1>登录系统</h1>
+              <div>
+                <input type="text" name="loginId" class="form-control" placeholder="用户名" required="" />
+              </div>
+              <div>
+                <input type="password" name="loginPassword" class="form-control" placeholder="密码" required="" />
+              </div>
+              <div>
+                <button class="btn btn-default submit" type="button" onclick="func_login();">登录</button>
+                <a class="reset_pass" href="#"></a>
+              </div>
+
+              <div class="clearfix"></div>
+
+              <div class="separator">
+                <p class="change_link">
+                  <a href="#signup" class="to_register"></a>
+                </p>
+
+                <div class="clearfix"></div>
+                <br />
+
+                <div>
+                  <h1><i class="fa fa-paw"></i>Power BY Ken Ngai</h1>
+                </div>
+              </div>
+            </form>
+          </section>
+        </div>
+
+        <div id="register" class="animate form registration_form">
+          <section class="login_content">
+            <form>
+              <h1>Create Account</h1>
+              <div>
+                <input type="text" class="form-control" placeholder="Username" required="" />
+              </div>
+              <div>
+                <input type="email" class="form-control" placeholder="Email" required="" />
+              </div>
+              <div>
+                <input type="password" class="form-control" placeholder="Password" required="" />
+              </div>
+              <div>
+                <a class="btn btn-default submit" href="index.html">Submit</a>
+              </div>
+
+              <div class="clearfix"></div>
+
+              <div class="separator">
+                <p class="change_link">Already a member ?
+                  <a href="#signin" class="to_register"> Log in </a>
+                </p>
+
+                <div class="clearfix"></div>
+              </div>
+            </form>
+          </section>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
