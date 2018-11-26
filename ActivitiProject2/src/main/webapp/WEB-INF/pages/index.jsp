@@ -67,9 +67,9 @@
                             <h3>General</h3>
                             <ul class="nav side-menu">
                                 <li class="active">
-                                    <a><i class="fa fa-home"></i> 报销管理 <span class="fa fa-chevron-down"></span></a>
+                                    <a><i class="fa fa-home"></i>报销管理 <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="bxsq.html">报销申请</a></li>
+                                        <li><a href="${ctx}/refundBill/add">报销申请</a></li>
                                         <li><a href="index2.html">Dashboard2</a></li>
                                         <li><a href="index3.html">Dashboard3</a></li>
                                     </ul>
