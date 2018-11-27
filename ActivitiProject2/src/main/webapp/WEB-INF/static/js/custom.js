@@ -953,13 +953,13 @@ if (typeof NProgress != 'undefined') {
 		};  
 	   
 	   /* PARSLEY */
-			
+/*
 		function init_parsley() {
 			
 			if( typeof (parsley) === 'undefined'){ return; }
 			console.log('init_parsley');
 			
-			$/*.listen*/('parsley:field:validate', function() {
+			$('parsley:field:validate', function() {
 			  validateFront();
 			});
 			$('#demo-form .btn').on('click', function() {
@@ -976,7 +976,7 @@ if (typeof NProgress != 'undefined') {
 			  }
 			};
 		  
-			$/*.listen*/('parsley:field:validate', function() {
+			$('parsley:field:validate', function() {
 			  validateFront();
 			});
 			$('#demo-form2 .btn').on('click', function() {
@@ -998,7 +998,7 @@ if (typeof NProgress != 'undefined') {
 			  } catch (err) {}
 			
 		};
-	   
+	   */
 		
 		  /* INPUTS */
 		  
@@ -5017,7 +5017,7 @@ if (typeof NProgress != 'undefined') {
 		init_IonRangeSlider();
 		init_ColorPicker();
 		init_TagsInput();
-		init_parsley();
+		//init_parsley();
 		init_daterangepicker();
 		init_daterangepicker_right();
 		init_daterangepicker_single_call();

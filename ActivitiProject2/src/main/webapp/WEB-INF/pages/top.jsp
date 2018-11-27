@@ -1,75 +1,104 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/pages/taglib.jsp" %>
-<!doctype html>
-<html>
-<head>
-<style type="text/css">
-<!--
-body {
-	margin-left: 0px;
-	margin-top: 0px;
-	margin-right: 0px;
-	margin-bottom: 0px;
-}
-.STYLE1 {
-	font-size: 12px;
-	color: #000000;
-}
-.STYLE5 {font-size: 12}
-.STYLE7 {font-size: 12px; color: #FFFFFF; }
--->
-</style>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>banner</title>
-</head>
-<body>
-	<table width="100%" border="0" cellspacing="0" cellpadding="0">
-	  <tr>
-	    <td height="57" background="${ctx}/static/images/main_03.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-	      <tr>
-	        <td width="450" height="57" background="${ctx}/static/images/main_01.gif">&nbsp;</td>
-	        <td>&nbsp;</td>
-	        <td width="281" valign="bottom"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-	          <tr>
-	            <td width="33" height="27"><img src="${ctx}/static/images/main_05.gif" width="33" height="27" /></td>
-	            <td width="448" background="${ctx}/static/images/main_06.gif"><table width="425" border="0" align="center" cellpadding="0" cellspacing="0">
-	              <tr>
-	                <td><div align="right"><span class="STYLE6"><b>当前登录用户：${sessionScope.user.loginId }</b></span></div></td>
-	                <td><div align="right"><a href="loginAction_logout.action" target="parent"><img src="${ctx}/static/images/quit.gif" width="69" height="17" /></a></div></td>
-	              </tr>
-	            </table></td>
-	          </tr>
-	        </table></td>
-	      </tr>
-	    </table></td>
-	  </tr>
-	  <tr>
-	    <td height="40" background="${ctx}/static/images/main_10.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-	      <tr>
-	        <td width="194" height="40" background="${ctx}/static/images/main_07.gif">&nbsp;</td>
-	        <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
-	          <tr>
-	            <td width="21"><img src="${ctx}/static/images/main_13.gif" width="19" height="14" /></td>
-	            <td width="300" class="STYLE7">
-	            </td>
-	            <td>&nbsp;</td>
-	          </tr>
-	        </table></td>
-	        <td width="260" background="${ctx}/static/images/main_11.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-	          <tr>
-	            <td width="16%"><span class="STYLE5"></span></td>
-	            <td width="84%"><div align="center"><span class="STYLE7">
-				<div id="test"></div>
-				<script >
-					setInterval("document.getElementById('test').innerHTML=new Date().toLocaleString()+' 星期'+'日一二三四五六'.charAt(new Date().getDay());",100);
-				</script>
-				</span></div></td>
-	          </tr>
-	        </table></td>
-	      </tr>
-	    </table></td>
-	  </tr>
-	</table>
-</body>
-</html>
+<!-- top navigation -->
+<div class="top_nav">
+    <div class="nav_menu">
+        <nav>
+            <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="">
+                    <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
+                        aria-expanded="false">
+                        <img src="images/img.jpg" alt="">${sessionScope.user.loginId}
+                        <span class=" fa fa-angle-down"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-usermenu pull-right">
+                        <li><a href="javascript:;"> Profile</a></li>
+                        <li>
+                            <a href="javascript:;">
+                                <span class="badge bg-red pull-right">50%</span>
+                                <span>Settings</span>
+                            </a>
+                        </li>
+                        <li><a href="javascript:;">Help</a></li>
+                        <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                    </ul>
+                </li>
+
+                <li role="presentation" class="dropdown">
+                    <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown"
+                        aria-expanded="false">
+                        <i class="fa fa-envelope-o"></i>
+                        <span class="badge bg-green">6</span>
+                    </a>
+                    <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
+                        <li>
+                            <a>
+                                <span class="image"><img src="${ctx}/static/images/img.jpg" alt="Profile Image" /></span>
+                                <span>
+                                    <span>John Smith</span>
+                                    <span class="time">3 mins ago</span>
+                                </span>
+                                <span class="message">
+                                    Film festivals used to be do-or-die moments for movie makers. They were
+                                    where...
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a>
+                                <span class="image"><img src="${ctx}/static/images/img.jpg" alt="Profile Image" /></span>
+                                <span>
+                                    <span>John Smith</span>
+                                    <span class="time">3 mins ago</span>
+                                </span>
+                                <span class="message">
+                                    Film festivals used to be do-or-die moments for movie makers. They were
+                                    where...
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a>
+                                <span class="image"><img src="${ctx}/static/images/img.jpg" alt="Profile Image" /></span>
+                                <span>
+                                    <span>John Smith</span>
+                                    <span class="time">3 mins ago</span>
+                                </span>
+                                <span class="message">
+                                    Film festivals used to be do-or-die moments for movie makers. They were
+                                    where...
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a>
+                                <span class="image"><img src="${ctx}/static/images/img.jpg" alt="Profile Image" /></span>
+                                <span>
+                                    <span>John Smith</span>
+                                    <span class="time">3 mins ago</span>
+                                </span>
+                                <span class="message">
+                                    Film festivals used to be do-or-die moments for movie makers. They were
+                                    where...
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <div class="text-center">
+                                <a>
+                                    <strong>See All Alerts</strong>
+                                    <i class="fa fa-angle-right"></i>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<!-- /top navigation -->

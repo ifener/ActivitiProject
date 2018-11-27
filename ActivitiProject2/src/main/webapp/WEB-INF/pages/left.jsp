@@ -1,172 +1,84 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/pages/taglib.jsp" %>
-<!doctype html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>菜单</title>
-<script language="JavaScript" type="text/JavaScript">
-//判断浏览器的变量
-NS4 = (document.layers) ? 1 : 0;
-IE4 = (document.all) ? 1 : 0;
-ver4 = (NS4 || IE4) ? 1 : 0;
-//定义各个层的位置及显示状态
-if (ver4) {
-    with (document) {
-        write("<STYLE TYPE='text/css'>");
-        if (NS4) {
-            write(".parent {position:absolute; visibility:visible}");
-            write(".child {position:absolute; visibility:visible}");
-            write(".regular {position:absolute; visibility:visible}")
-        }
-        else {
-            write(".child {display:none}")
-        }
-        write("</STYLE>");
-    }
-}
-//当菜单打开时，页面上菜单以下的东西的位置顺序往下推，菜单合起时，菜单以下的东西自动上移。
-function arrange() {
-    nextY = document.layers[firstInd].pageY +document.layers[firstInd].document.height;
-    for (i=firstInd+1; i<document.layers.length; i++) {
-        whichele = document.layers[i];
-        if (whichele.visibility != "hide") {
-            whichele.pageY = nextY;
-            nextY += whichele.document.height;
-        }
-    }
-}
-//初始化菜单
-function initIt(){
-        divColl = document.getElementsByTagName("DIV");
-        for (i=0; i<divColl.length; i++) {
-            whichele = divColl(i);
-            if (whichele.className == "child") whichele.style.display = "none";
-        }
-}
-//展开菜单的方法
-function expandIt(ele) {
-    var layernum = 2;
-	var childname = ele.substring(0,4);
-	var childnum = ele.substring(4,5)
-       whichele = document.getElementById(ele + "Child");
-       if (whichele.style.display == "none") {
-           whichele.style.display = "";
-		for (i=1;i<layernum+1;i++)
-		{ if (childnum != i)
-		{ document.getElementById(childname + i +"Child").style.display ="none";
-		}
-		}
-       }
-       else {
-           //whichele.style.display = "none";
-       }
-}
-onload = initIt;
-</script>
-<style type="text/css">
-<!--
-body {
-	margin-left: 0px;
-	margin-top: 0px;
-	margin-right: 0px;
-	margin-bottom: 0px;
-}
-.STYLE3 {
-	font-size: 12px;
-	color: #435255;
-}
-.STYLE4 {font-size: 12px}
-.STYLE5 {font-size: 12px; font-weight: bold; }
-a {text-decoration:none;color:black}
--->
-</style></head>
+<!-- left column -->
+<div class="col-md-3 left_col">
+    <div class="left_col scroll-view">
+        <div class="navbar nav_title" style="border: 0;">
+            <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>工作流</span></a>
+        </div>
+        <div class="clearfix"></div>
 
-<body>
+        <!-- menu profile quick info -->
+        <div class="profile clearfix">
+            <div class="profile_pic">
+                <img src="${ctx}/static/images/img.jpg" alt="..." class="img-circle profile_img">
+            </div>
+            <div class="profile_info">
+                <span>Welcome,</span>
+                <h2>${sessionScope.user.loginId}</h2>
+            </div>
+        </div>
+        <!-- /menu profile quick info -->
 
-<table width="147" height="100%" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr>
-    <td height="23" background="${ctx}/static/images/main_34.gif"><div align="center" class="STYLE4" id="Menu1Parent"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-      <tr>
-        <td width="9%">&nbsp;</td>
-        <td width="83%"><div align="center" class="STYLE4"><a href="#" onClick="expandIt('Menu1'); return false" >业务管理</a></div></td>
-        <td width="8%">&nbsp;</td>
-      </tr>
-    </table></div></td>
-  </tr>
-  <tr>
-    <td valign="top"><div align="center" id="Menu1Child">
-      <table width="82%" border="0" align="center" cellpadding="0" cellspacing="0">
-        <tr>
-          <td height="38"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-            <tr>
-              <td width="33" height="28"><img src="${ctx}/static/images/main_52.gif" width="28" height="28"></td>
-              <td width="99"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-                  <tr>
-                    <td height="23" class="STYLE4" style="cursor:hand" onMouseOver="this.style.backgroundImage='url(${ctx}/static/images/tab_bg.gif)';this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#adb9c2'; "onmouseout="this.style.backgroundImage='url()';this.style.borderStyle='none'">
-                    	<a href="refundBill/list" target="main">报销管理</a>
-                    </td>
-                  </tr>
-              </table></td>
-            </tr>
-          </table></td>
-        </tr>
-        
-      </table>
-    </div></td>
-  </tr>
-  <tr>
-    <td height="23" background="${ctx}/static/images/main_34_1.gif"><div align="center" class="STYLE4" id="Menu2Parent"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-      <tr>
-        <td width="9%">&nbsp;</td>
-        <td width="83%"><div align="center" class="STYLE4"><a href="#" onClick="expandIt('Menu2'); return false" >流程管理</a></div></td>
-        <td width="8%">&nbsp;</td>
-      </tr>
-    </table></div></td>
-  </tr>
-   <tr>
-    <td valign="top"><div align="center" id="Menu2Child" style="display:none">
-      <table width="82%" border="0" align="center" cellpadding="0" cellspacing="0">
-        <tr>
-          <td height="38"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-            <tr>
-              <td width="33" height="28"><img src="${ctx}/static/images/main_48.gif" width="28" height="28"></td>
-              <td width="99"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-                  <tr>
-                    <td height="23" class="STYLE4" style="cursor:hand" onMouseOver="this.style.backgroundImage='url(${ctx}/static/images/tab_bg.gif)';this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#adb9c2'; "onmouseout="this.style.backgroundImage='url()';this.style.borderStyle='none'">
-                    	<a href="workflow/workflows" target="main">部署管理</a>
-                    </td>
-                  </tr>
-              </table></td>
-            </tr>
-          </table></td>
-        </tr>
-        <tr>
-          <td height="38"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-            <tr>
-              <td width="33" height="28"><img src="${ctx}/static/images/main_40.gif" width="28" height="28"></td>
-              <td width="99"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-                  <tr>
-                    <td height="23" class="STYLE4" style="cursor:hand" onMouseOver="this.style.backgroundImage='url(${ctx}/static/images/tab_bg.gif)';this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#adb9c2'; "onmouseout="this.style.backgroundImage='url()';this.style.borderStyle='none'">
-						<a href="refundBill/taskList" target="main">任务管理</a>
-					</td>
-                  </tr>
-              </table></td>
-            </tr>
-          </table></td>
-        </tr>
-      </table></div>
-    </td>
-  </tr>
-  
-  
-  <tr>
-    <td height="19" background="${ctx}/static/images/main_69.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-      <tr>
-        <td width="1%">&nbsp;</td>
-        <td width="99%" valign="bottom"><span class="STYLE3"></span></td>
-      </tr>
-    </table></td>
-  </tr>
-</table>
-</body>
-</html>
+        <!-- sidebar menu -->
+        <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+            <div class="menu_section">
+                <h3>General</h3>
+                <ul class="nav side-menu">
+                    <li class="active">
+                        <a><i class="fa fa-home"></i>报销管理 <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a href="${ctx}/refundBill/add">报销申请</a></li>
+                            <li><a href="index2.html">Dashboard2</a></li>
+                            <li><a href="index3.html">Dashboard3</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a><i class="fa fa-edit"></i> Forms <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a href="form.html">General Form</a></li>
+                            <li><a href="form_advanced.html">Advanced Components</a></li>
+                            <li><a href="form_validation.html">Form Validation</a></li>
+                            <li><a href="form_wizards.html">Form Wizard</a></li>
+                            <li><a href="form_upload.html">Form Upload</a></li>
+                            <li><a href="form_buttons.html">Form Buttons</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a><i class="fa fa-desktop"></i> UI Elements <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a href="general_elements.html">General Elements</a></li>
+                            <li><a href="media_gallery.html">Media Gallery</a></li>
+                            <li><a href="typography.html">Typography</a></li>
+                            <li><a href="icons.html">Icons</a></li>
+                            <li><a href="glyphicons.html">Glyphicons</a></li>
+                            <li><a href="widgets.html">Widgets</a></li>
+                            <li><a href="invoice.html">Invoice</a></li>
+                            <li><a href="inbox.html">Inbox</a></li>
+                            <li><a href="calendar.html">Calendar</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /sidebar menu -->
+
+        <!-- /menu footer buttons -->
+        <div class="sidebar-footer hidden-small">
+            <a data-toggle="tooltip" data-placement="top" title="Settings">
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+            </a>
+            <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+            </a>
+            <a data-toggle="tooltip" data-placement="top" title="Lock">
+                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+            </a>
+            <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
+                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+            </a>
+        </div>
+        <!-- /menu footer buttons -->
+    </div>
+</div>
+<!-- /left column -->
