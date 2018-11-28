@@ -440,4 +440,8 @@ public class GenericDaoImpl<T, PK extends Serializable> extends HibernateDaoSupp
 
 	}
 
+	protected String parseLike(String like, boolean prefix, boolean suffix) {
+		return (prefix ? "%" : "") + like + (suffix ? "%" : "");
+	}
+
 }

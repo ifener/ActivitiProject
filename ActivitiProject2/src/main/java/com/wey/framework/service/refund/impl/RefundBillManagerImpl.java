@@ -47,7 +47,7 @@ public class RefundBillManagerImpl extends GenericManagerImpl<RefundBill, Long> 
 
 	
 	@Override
-	@Transactional(readOnly=true)
+	@Transactional
 	public RefundBill saveAndStar(RefundBill refundBill) {
 		try {
 			refundBill = save(refundBill);

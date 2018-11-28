@@ -1764,9 +1764,7 @@ if (typeof NProgress != 'undefined') {
 			if( typeof ($.fn.daterangepicker) === 'undefined'){ return; }
 			console.log('init_daterangepicker_reservation');
 		 
-			$('#reservation').daterangepicker(null, function(start, end, label) {
-			  console.log(start.toISOString(), end.toISOString(), label);
-			});
+			
 
 			$('#reservation-time').daterangepicker({
 			  timePicker: true,

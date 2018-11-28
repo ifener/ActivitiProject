@@ -38,13 +38,18 @@ public class WorkFlowController {
 		model.addAttribute("processDefinitionBO", processDefinitionBO);
 		return "workflow/workflow";
 	}
+	
+	@GetMapping("/add")
+	public String add() {
+		return "workflow/form";
+	}
 
 	@PostMapping("/deploy")
-	public String deploy(@RequestParam("file") MultipartFile file, @RequestParam("filename") String filename) {
+	public String deploy(@RequestParam("file") MultipartFile file, @RequestParam("name") String name) {
 		if (file != null) {
 			try {
 				ZipInputStream zis = new ZipInputStream(file.getInputStream());
-				workflowManager.deploy(zis, filename);
+				workflowManager.deploy(zis, name);
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (Exception e) {

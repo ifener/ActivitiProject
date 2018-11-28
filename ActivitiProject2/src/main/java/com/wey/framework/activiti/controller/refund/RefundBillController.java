@@ -25,9 +25,11 @@ public class RefundBillController {
 	private RefundBillManager refundBillManager;
 	
 	@RequestMapping("/list")
-	public String list(Pagination page,Model model) {
+	public String list(Pagination page,RefundBillBO refundBillBO,Model model) {
+		page.setSearch(refundBillBO);
 		refundBillManager.findByPage(page);
 		model.addAttribute("page", page);
+		model.addAttribute("refundBillBO", refundBillBO);
 		return "refundBill/list";
 	}
 	

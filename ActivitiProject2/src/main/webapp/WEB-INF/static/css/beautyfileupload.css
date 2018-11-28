@@ -1,0 +1,71 @@
+.beauty-upload .input-append {
+    height: 30px !important;
+}
+
+.beauty-upload .input-append {
+    width: 70%;
+    height: 37px;
+    border: 1px solid #d9dde1;
+    display: inline-block;
+    background-color: #fff;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.beauty-upload .input-large {
+    height: 28px !important;
+}
+
+.beauty-upload .input-large {
+    width: 100%;
+    border: none;
+    height: 35px;
+    vertical-align: bottom;
+    background: url(images/file.png) no-repeat right;
+    padding-right: 20px;
+    line-height: 34px;
+}
+
+.beauty-upload .btn-container {
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    cursor: pointer;
+    margin-left: 8px;
+    margin-top: 2px;
+}
+
+.beauty-upload .btn-container input[type=file] {
+    left: -157px !important;
+    height: 26px;
+}
+
+.beauty-upload .btn-container input[type=file] {
+    display: inline-block;
+    width: 200px;
+    left: -146px;
+    position: absolute;
+    top: 1px;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    cursor: pointer;
+    height: 34px;
+}
+
+.beauty-upload .btn {
+    padding: 4px 8px;
+    font-size: 12px;
+    line-height: 1.5;
+    margin-bottom: 0;
+    box-shadow:0 0 5px 0 rgba(0,0,0,.36);
+}
+
+.beauty-upload .btn:hover{
+	border:1px solid #3a78b3;
+}
+
+.beauty-upload .btn-primary {
+    background-color: white;
+    border-color: #4886c1;
+    color: #4886c1;
+}
