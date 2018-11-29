@@ -1,4 +1,4 @@
-package com.wey.framework.activiti.controller;
+package com.wey.framework.controller.activiti;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

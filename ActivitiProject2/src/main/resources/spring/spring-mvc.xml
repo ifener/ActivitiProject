@@ -12,7 +12,7 @@
 	http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
 	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
 
-	<context:component-scan base-package="com.wey.framework.activiti.controller" />
+	<context:component-scan base-package="com.wey.framework.controller" />
 
 	<mvc:annotation-driven conversion-service="conversionService">
 		<mvc:message-converters register-defaults="true">
@@ -36,6 +36,7 @@
 			<list>
 				<bean class="com.wey.framework.converter.DateConverter" />
 				<bean class="com.wey.framework.converter.TimestampConverter" />
+				<bean class="com.wey.framework.converter.DateRangeConverter" />
 			</list>
 		</property>
 	</bean>
@@ -58,7 +59,7 @@
 	<mvc:resources location="/WEB-INF/static/fonts/" mapping="/static/fonts/**" />
 	<mvc:resources location="/WEB-INF/static/images/"
 		mapping="/static/images/**" />
-
+    <mvc:resources location="/upload/images/" mapping="/upload/images/**" />
 
 
 	<!--配置拦截器, 多个拦截器,顺序执行 -->
@@ -70,6 +71,7 @@
 			<mvc:exclude-mapping path="/login" />
 			<mvc:exclude-mapping path="/doLogin" />
 			<mvc:exclude-mapping path="/static/**" />
+			<mvc:exclude-mapping path="/upload/**" />
 			<bean class="com.wey.framework.interceptor.LoginInterceptor"></bean>
 		</mvc:interceptor>
 

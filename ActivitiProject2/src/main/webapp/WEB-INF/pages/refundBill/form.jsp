@@ -10,8 +10,10 @@
     <jsp:include page="/WEB-INF/pages/headerjs.jsp"></jsp:include>
     <!-- bootstrap-daterangepicker -->
     <link href="${ctx}/static/css/daterangepicker.css" rel="stylesheet">
-     <!-- bootstrap-datetimepicker -->
-     <link href="${ctx}/static/css/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
+    <!-- bootstrap-datetimepicker -->
+    <link href="${ctx}/static/css/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
+    <!-- include summernote css/js -->
+	<link href="${ctx}/static/css/summernote.css" rel="stylesheet">
 </head>
 <body class="nav-md">
     <div class="container body">
@@ -79,8 +81,8 @@
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="textarea">
                                            	 说明<span class="required">*</span>
                                         </label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <form:textarea path="content" class="form-control col-md-7 col-xs-12" required="required" />
+                                        <div class="col-md-8 col-sm-8 col-xs-12">
+                                            <form:textarea path="content" id="content" required="required" />
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -111,7 +113,11 @@
 
     <!-- Custom Theme Scripts -->
     <script src="${ctx}/static/js/custom.js"></script>
-
+    <!-- Parsley -->
+    <script src="${ctx}/static/js/parsleyjs/parsley.min.js"></script>
+    <script src="${ctx}/static/js/parsleyjs/i18n/zh_cn.js"></script>
+    <script src="${ctx}/static/js/summernote.min.js"></script>
+    <script src="${ctx}/static/js/summernote-lang/summernote-zh-CN.js"></script>
     <script>
         $(function(){
             $('#refundTime').datetimepicker({
@@ -120,13 +126,51 @@
                 ignoreReadonly: true,
                 collapse:true
             });
+            
+            $('#content').summernote({
+            	placeholder: '请输入说明',
+                tabsize: 2,
+                minHeight: 300,             // set minimum height of editor
+                lang: 'zh-CN',
+                callbacks: {
+                    onImageUpload: function(files) {
+                      UploadFiles(files);
+                      //$summernote.summernote('insertNode', imgNode);
+                    }
+                 }
+            });
         });
+        
+
+        function UploadFiles(files){
+        //这里files是因为我设置了可上传多张图片，所以需要依次添加到formData中
+            var formData = new FormData();
+            for(f in files){
+                formData.append("file", files[f]);
+            }
+         
+            $.ajax({
+                data: formData,
+                type: "POST",
+                url: "${ctx}/upload/uploadImages",
+                cache: false,
+                dataType:"json",
+                contentType: false,
+                processData: false,
+                success: function(imageUrl) {
+                	console.log(imageUrl);
+                	 for(i in imageUrl){
+                		 console.log(imageUrl[i])
+                	        $('#content').summernote('editor.insertImage',"${ctx}"+imageUrl[i]);
+                	    }
+
+             
+                },
+                error: function() {
+                    console.log("uploadError");
+                }
+            })
+        }
     </script>
-    
-    
-    
-    <!-- Parsley -->
-    <script src="${ctx}/static/js/parsleyjs/parsley.min.js"></script>
-    <script src="${ctx}/static/js/parsleyjs/i18n/zh_cn.js"></script>
 </body>
 </html>
