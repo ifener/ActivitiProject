@@ -1,11 +1,14 @@
 package com.wey.framework.controller.activiti;
 
-
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.zip.ZipInputStream;
+
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,28 +20,29 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.wey.framework.activiti.bo.ProcessDefinitionBO;
 import com.wey.framework.activiti.service.WorkflowManager;
+import com.wey.framework.controller.BaseController;
 import com.wey.framework.util.Pagination;
 
 @Controller
 @RequestMapping("/workflow")
-public class WorkFlowController {
+public class WorkFlowController extends BaseController {
 
 	@Autowired
 	private WorkflowManager workflowManager;
 
-	@RequestMapping("/workflows")
-	public String workflows(Pagination page,ProcessDefinitionBO processDefinitionBO,Model model) {
-        if(page==null) {
-        	page = new Pagination();
-        }
-        
-        page.setSearch(processDefinitionBO);
+	@RequestMapping("/list")
+	public String list(Pagination page, ProcessDefinitionBO processDefinitionBO, Model model) {
+		if (page == null) {
+			page = new Pagination();
+		}
+
+		page.setSearch(processDefinitionBO);
 		workflowManager.findProcessDefinition(page);
 		model.addAttribute("page", page);
 		model.addAttribute("processDefinitionBO", processDefinitionBO);
-		return "workflow/workflow";
+		return custom();
 	}
-	
+
 	@GetMapping("/add")
 	public String add() {
 		return "workflow/form";
@@ -60,20 +64,20 @@ public class WorkFlowController {
 		System.out.println(file);
 		return "redirect:workflows";
 	}
-	
+
 	@GetMapping("/viewImage")
 	public String viewImage(@RequestParam("deploymentId") String deploymentId,
-			@RequestParam("resourceName") String resourceName,HttpServletResponse response) {
+			@RequestParam("resourceName") String resourceName, HttpServletResponse response) {
 		InputStream inputStream = workflowManager.findProcessDefinitionImage(deploymentId, resourceName);
-		if(inputStream!=null) {
+		if (inputStream != null) {
 			ServletOutputStream outputStream = null;
 			try {
 				outputStream = response.getOutputStream();
 				byte[] bytes = new byte[1024];
-				while(inputStream.read(bytes)>0) {
+				while (inputStream.read(bytes) > 0) {
 					outputStream.write(bytes);
 				}
-				outputStream.close();
+
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -89,7 +93,38 @@ public class WorkFlowController {
 		}
 		return null;
 	}
-	
+
+	@GetMapping("/viewImageBase64")
+	public String viewImageBase64(@RequestParam("deploymentId") String deploymentId,
+			@RequestParam("resourceName") String resourceName, Model model) {
+		InputStream inputStream = workflowManager.findProcessDefinitionImage(deploymentId, resourceName);
+		if (inputStream != null) {
+			ByteArrayOutputStream outputStream = null;
+			try {
+				outputStream = new ByteArrayOutputStream();
+				byte[] bytes = new byte[1024];
+				while (inputStream.read(bytes) > 0) {
+					outputStream.write(bytes);
+				}
+				byte[] byteArray = outputStream.toByteArray();
+				String png = new String(Base64.encodeBase64(byteArray));
+				model.addAttribute("png", png);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					inputStream.close();
+					outputStream.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return custom();
+	}
+
 	@PostMapping("/remove")
 	public String deleteProcessDefinition(@RequestParam("deploymentId") String deploymentId) {
 		workflowManager.deleteProcessDefinition(deploymentId);

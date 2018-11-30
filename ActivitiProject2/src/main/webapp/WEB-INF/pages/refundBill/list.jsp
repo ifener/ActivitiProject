@@ -90,6 +90,7 @@
 						                          <td>${refundBill.user.employeeName}</td>
 						                          <td>${refundBill.subject}</td>
 						                          <td>${refundBill.refundAmount}</td>
+						                          <td><a href="view/${refundBill.id}">查看</a></td>
 						                        </tr>
 					                        </c:forEach>
 					                      </tbody>

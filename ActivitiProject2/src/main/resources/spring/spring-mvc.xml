@@ -37,6 +37,7 @@
 				<bean class="com.wey.framework.converter.DateConverter" />
 				<bean class="com.wey.framework.converter.TimestampConverter" />
 				<bean class="com.wey.framework.converter.DateRangeConverter" />
+				<bean class="com.wey.framework.converter.DateRangeToStringConverter" />
 			</list>
 		</property>
 	</bean>

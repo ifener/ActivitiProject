@@ -6,10 +6,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>报销审批</title>
+    <title>流程管理</title>
     <jsp:include page="/WEB-INF/pages/headerjs.jsp"></jsp:include>
-     <!-- bootstrap-daterangepicker -->
-    <link href="${ctx}/static/css/daterangepicker.css" rel="stylesheet" />
+    <!-- bootstrap dialog -->
+    <link href="${ctx}/static/css/bootstrap-dialog.min.css" rel="stylesheet">s
 </head>
 <body class="nav-md">
     <div class="container body">
@@ -23,7 +23,7 @@
             		<div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="x_panel">
                             <div class="x_title">
-                                <h2>报销审批列表<small></small></h2>
+                                <h2>流程管理<small>查询流程定义数据</small></h2>
                                 <ul class="nav navbar-right panel_toolbox">
                                     <li>
                                         <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -42,24 +42,17 @@
                                 <div class="clearfix"></div>
                             </div>
                             <div class="x_content">
-                            	<form:form action="findTaskList" modelAttribute="refundBillBO" class="form-horizontal form-label-left">
+                            	<form:form action="list" modelAttribute="processDefinitionBO" class="form-horizontal form-label-left">
                             		<div class="panel panel-default">
 										<div class="panel-body">
 											<div class="form-group">
-												<div class="col-xs-2 control-label">报销日期</div>       
+												<div class="col-xs-2 control-label">流程编码</div>       
 												<div class="col-xs-4">
-									                <div class="control-group">
-						                              <div class="controls">
-						                                <div class="input-prepend input-group">
-						                                  <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
-						                                  <form:input path="dateRange" cssClass="form-control col-md-7 col-xs-12"/>
-						                                </div>
-						                              </div>
-						                            </div>
+									            	<form:input path="processKey" cssClass="form-control col-md-7 col-xs-12"/>
 												</div>
-												<div class="col-xs-2 control-label">标题</div>       
+												<div class="col-xs-2 control-label">流程名称</div>       
 												<div class="col-xs-4">
-									                <form:input path="refundBill.subject" cssClass="form-control col-md-7 col-xs-12"/>
+									                <form:input path="processName" cssClass="form-control col-md-7 col-xs-12"/>
 												</div>
 											</div>
 											
@@ -74,31 +67,32 @@
 									<table class="table table-striped table-bordered">
 					                    <thead>
 					                        <tr>
-										        <td><div align="center"><span class="STYLE10">序号</span></div></td>
-										        <td><div align="center"><span class="STYLE10">申请人</span></div></td>
-										        <td><div align="center"><span class="STYLE10">申请日期</span></div></td>
-										        <td><div align="center"><span class="STYLE10">标题</span></div></td>
-										        <td><div align="center"><span class="STYLE10">金额</span></div></td>
-										        <td><div align="center"><span class="STYLE10">状态</span></div></td>
-										        <td><div align="center"><span class="STYLE10">操作</span></div></td>
-										    </tr>
+					                          <th>序号</th>
+					                          <th>名称</th>
+					                          <th>流程KEY</th>
+					                          <th>流程版本</th>
+					                          <th>流程文件名称</th>
+					                          <th>流程图片名称</th>
+					                          <th>部署ID</th>
+					                          <th>操作</th>
+					                        </tr>
 					                      </thead>
 					                      <tbody>
-					                      	<c:if test="${page!=null}">
-										      	<c:forEach items="${page.datas}" var="item" varStatus="status">
-										      		<tr>
-												       <td>${status.index+1}</td>
-												       <td>${item.bizObj.user.employeeName}</td>
-												       <td>${item.bizObj.refundTime}</td>
-												       <td>${item.bizObj.subject}</td>
-												       <td>${item.bizObj.refundAmount}</td>
-												       <td>${item.bizObj.auditDesc}</td>
-												       <td>
-												       	   <a href="audit/${item.bizObj.id}">审批</a>
-												       </td>
-												    </tr> 
-										      	</c:forEach>
-										     </c:if>
+					                      	<c:forEach items="${page.datas}" var="process" varStatus="status">
+						                        <tr>
+						                          <th scope="row">${status.index+1}</th>
+						                          <td>${process.name}</td>
+						                          <td>${process.key}</td>
+						                          <td>${process.version}</td>
+						                          <td>${process.resourceName}</td>
+						                          <td>${process.diagramResourceName}</td>
+						                          <td>${process.deploymentId}</td>
+						                          <td>
+						                          	<a href="javascript:viewImage('${process.deploymentId}','${process.diagramResourceName}');">查看流程图</a>
+				        							<a href="javascript:remove('${process.deploymentId}')">删除</a>  
+						                          </td>
+						                        </tr>
+					                        </c:forEach>
 					                      </tbody>
 					                </table>
 					                <%@ include file="/WEB-INF/pages/paginator.jsp" %>
@@ -109,35 +103,21 @@
             	</div>
             </div>
             <!-- /page content -->
-            <jsp:include page="/WEB-INF/pages/footer.jsp"></jsp:include>
         </div>
     </div>
 
     <jsp:include page="/WEB-INF/pages/footerjs.jsp"></jsp:include>
-    <script src="${ctx}/static/js/moment/moment.min.js"></script>
-    <script src="${ctx}/static/js/daterangepicker.js"></script>
-
-    <!-- Custom Theme Scripts -->
-    <script src="${ctx}/static/js/custom.js?id=1"></script>
-    <!-- paginator -->
     <script src="${ctx}/static/js/bootstrap-paginator.js"></script>
+    <script src="${ctx}/static/js/bootstrap-dialog.min.js"></script>
     <script>
-      $(function(){
-    	  $('input[name='dateRange']').daterangepicker({
-    		  autoUpdateInput: false,
-              locale: {
-                  cancelLabel: 'Clear'
-              }
-          });
-    	  
-    	  $('input[name='dateRange']').on('apply.daterangepicker', function(ev, picker) {
-              $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
-          });
-
-    	  $('input[name='dateRange']').on('cancel.daterangepicker', function(ev, picker) {
-              $(this).val('');
-          });
-      });
+      function viewImage(deploymentId,resourceName){
+    	 var url = "${ctx}/workflow/viewImageBase64?deploymentId="+deploymentId+"&resourceName="+resourceName;
+    	 BootstrapDialog.show({
+    		 title: '查看流程图',
+             message: $('<div></div>').load(url),
+             size:BootstrapDialog.SIZE_WIDE
+         });
+      }
     </script>
 </body>
 </html>

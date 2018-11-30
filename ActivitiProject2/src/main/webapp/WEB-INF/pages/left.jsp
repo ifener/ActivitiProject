@@ -30,14 +30,14 @@
                         <ul class="nav child_menu">
                             <li><a href="${ctx}/refundBill/add">报销申请</a></li>
                             <li><a href="${ctx}/refundBill/list">报销列表</a></li>
-                            <li><a href="index3.html">报销审批</a></li>
+                            <li><a href="${ctx}/refundBill/findTaskList">报销审批</a></li>
                         </ul>
                     </li>
                     <li>
                         <a><i class="fa fa-edit"></i>流程管理<span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             <li><a href="${ctx}/workflow/add">流程部署</a></li>
-                            <li><a href="form_advanced.html">流程列表</a></li>
+                            <li><a href="${ctx}/workflow/list">流程列表</a></li>
                         </ul>
                     </li>
                     <li>
