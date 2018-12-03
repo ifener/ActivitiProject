@@ -8,6 +8,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>报销审批</title>
     <jsp:include page="/WEB-INF/pages/headerjs.jsp"></jsp:include>
+    <!-- include summernote css/js -->
+	<link href="${ctx}/static/css/summernote.css" rel="stylesheet" />
+	<link href="${ctx}/static/css/icheck-green.css" rel="stylesheet" />
+	<link href="${ctx}/static/css/bootstrap-dialog.min.css" rel="stylesheet" />
 </head>
 <body class="nav-md">
     <div class="container body">
@@ -40,9 +44,10 @@
                                 <div class="clearfix"></div>
                             </div>
                             <div class="x_content">
-                                <form:form action="${ctx}/refundBill/save" method="POST" modelAttribute="refundBill" class="form-horizontal form-label-left" data-parsley-validate="data-parsley-validate">
+                                <form action="${ctx}/refundBill/saveAudit" method="POST" class="form-horizontal form-label-left" data-parsley-validate="data-parsley-validate">
+                                	<input type="hidden" name="id" value="${refundBill.id}"/>
                                     <div class="item form-group">
-                                        <label class="col-md-3 col-sm-3 col-xs-12" for="name">
+                                        <label class="col-md-3 col-sm-3 col-xs-12 control-label" for="name">
                                           	  标题<span class="required">*</span>
                                         </label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -50,7 +55,7 @@
                                         </div>
                                     </div>
                                     <div class="item form-group">
-                                        <label class="col-md-3 col-sm-3 col-xs-12" for="name">
+                                        <label class="col-md-3 col-sm-3 col-xs-12 control-label" for="name">
                                           	  报销金额<span class="required">*</span>
                                         </label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -58,7 +63,7 @@
                                         </div>
                                     </div>
                                     <div class="item form-group">
-                                        <label class="col-md-3 col-sm-3 col-xs-12" for="name">
+                                        <label class="col-md-3 col-sm-3 col-xs-12 control-label" for="name">
                                             	报销日期<span class="required">*</span>
                                         </label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -67,19 +72,15 @@
                                         
                                     </div>
                                     <div class="item form-group">
-                                        <label class="col-md-3 col-sm-3 col-xs-12" for="textarea">
+                                        <label class="col-md-3 col-sm-3 col-xs-12 control-label" for="textarea">
                                            	 说明<span class="required">*</span>
                                         </label>
-                                        <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
                                            ${refundBill.content}
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                            <button type="button" onclick="window.history.back();" class="btn btn-success">返回</button>
-                                        </div>
-                                    </div>
-                                </form:form>
+                                    <%@ include file="approve.jsp" %>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -91,15 +92,59 @@
     </div>
 
     <jsp:include page="/WEB-INF/pages/footerjs.jsp"></jsp:include>
-    <!-- Parsley -->
-    <script src="${ctx}/static/js/parsleyjs/parsley.min.js"></script>
-    <script src="${ctx}/static/js/parsleyjs/i18n/zh_cn.js"></script>
-    <script src="${ctx}/static/js/moment/moment.min.js"></script>
-    <script src="${ctx}/static/js/daterangepicker.js"></script>
-    <!-- bootstrap-datetimepicker -->    
-    <script src="${ctx}/static/js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
-
+    <!-- icheck -->
+    <script src="${ctx}/static/js/icheck.min.js"></script>
+    <script src="${ctx}/static/js/summernote.min.js"></script>
+    <script src="${ctx}/static/js/summernote-lang/summernote-zh-CN.js"></script>
+    <script src="${ctx}/static/js/bootstrap-dialog.min.js"></script>
+	<script src="${ctx}/static/js/bootstrapGlobal.js"></script>
     <!-- Custom Theme Scripts -->
     <script src="${ctx}/static/js/custom.js"></script>
+    <script type="text/javascript">
+      $(function(){
+    	  $('#advice').summernote({
+          	placeholder: '请输入说明',
+              tabsize: 2,
+              minHeight: 300,             // set minimum height of editor
+              lang: 'zh-CN',
+              callbacks: {
+                  onImageUpload: function(files) {
+                    UploadFiles(files);
+                    //$summernote.summernote('insertNode', imgNode);
+                  }
+               }
+          });
+      });
+      
+      function UploadFiles(files){
+          //这里files是因为我设置了可上传多张图片，所以需要依次添加到formData中
+              var formData = new FormData();
+              for(f in files){
+                  formData.append("file", files[f]);
+              }
+           
+              $.ajax({
+                  data: formData,
+                  type: "POST",
+                  url: "${ctx}/upload/uploadImages",
+                  cache: false,
+                  dataType:"json",
+                  contentType: false,
+                  processData: false,
+                  success: function(imageUrl) {
+                  	console.log(imageUrl);
+                  	 for(i in imageUrl){
+                  		 console.log(imageUrl[i])
+                  	        $('#advice').summernote('editor.insertImage',"${ctx}"+imageUrl[i]);
+                  	    }
+
+               
+                  },
+                  error: function() {
+                      console.log("uploadError");
+                  }
+              })
+          }
+    </script>
 </body>
 </html>

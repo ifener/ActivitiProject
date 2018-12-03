@@ -80,6 +80,7 @@
 					                          <th>申请人</th>
 					                          <th>标题</th>
 					                          <th>报销金额</th>
+					                          <th>状态</th>
 					                          <th>操作</th>
 					                        </tr>
 					                      </thead>
@@ -90,6 +91,7 @@
 						                          <td>${refundBill.user.employeeName}</td>
 						                          <td>${refundBill.subject}</td>
 						                          <td>${refundBill.refundAmount}</td>
+						                          <td>${refundBill.auditDesc}</td>
 						                          <td><a href="view/${refundBill.id}">查看</a></td>
 						                        </tr>
 					                        </c:forEach>

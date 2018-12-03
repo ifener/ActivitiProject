@@ -2,6 +2,7 @@ package com.wey.framework.activiti.service.impl;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipInputStream;
@@ -9,6 +10,7 @@ import java.util.zip.ZipInputStream;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.impl.identity.Authentication;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.repository.ProcessDefinitionQuery;
@@ -20,43 +22,40 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.wey.framework.activiti.bo.ProcessDefinitionBO;
-import com.wey.framework.activiti.constants.Constants;
 import com.wey.framework.activiti.model.TaskInfo;
 import com.wey.framework.activiti.model.Workflow;
 import com.wey.framework.activiti.service.WorkflowManager;
 import com.wey.framework.exception.ServiceException;
-import com.wey.framework.util.Context;
+import com.wey.framework.model.auth.User;
 import com.wey.framework.util.ContextUtil;
 import com.wey.framework.util.Pagination;
 
 @Service
-public class WorkflowManagerImpl implements WorkflowManager{
+public class WorkflowManagerImpl implements WorkflowManager {
 
 	@Autowired
 	private RepositoryService repositoryService;
-	
+
 	@Autowired
 	private RuntimeService runtimeService;
-	
+
 	@Autowired
 	private TaskService taskService;
-	
-	private static final String APPLICANT="applicant";
-	
+
+	private static final String APPLICANT = "applicant";
+
 	@Override
 	@Transactional
 	public void deploy(ZipInputStream zis, String name) {
 		try {
 			Deployment deploy = repositoryService.createDeployment().name(name).addZipInputStream(zis).deploy();
 			System.out.println(deploy.getId());
-			
-	
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new ServiceException("部署时没有找到文件："+e.getMessage());
+			throw new ServiceException("部署时没有找到文件：" + e.getMessage());
 		}
-		
+
 	}
 
 	/**
@@ -64,32 +63,32 @@ public class WorkflowManagerImpl implements WorkflowManager{
 	 */
 	@Override
 	public Pagination findProcessDefinition(Pagination page) {
-	    
-		//latestVersion()方法，只查询最新的流程
-		ProcessDefinitionQuery processDefinitionQuery = repositoryService.createProcessDefinitionQuery().latestVersion();
-		ProcessDefinitionBO processDefinitionBO = (ProcessDefinitionBO)page.getSearch();
-		if(processDefinitionBO!=null) {
+
+		// latestVersion()方法，只查询最新的流程
+		ProcessDefinitionQuery processDefinitionQuery = repositoryService.createProcessDefinitionQuery()
+				.latestVersion();
+		ProcessDefinitionBO processDefinitionBO = (ProcessDefinitionBO) page.getSearch();
+		if (processDefinitionBO != null) {
 			String processKey = processDefinitionBO.getProcessKey();
 			String processName = processDefinitionBO.getProcessName();
-			if(StringUtils.hasText(processKey)) {
+			if (StringUtils.hasText(processKey)) {
 				processDefinitionQuery = processDefinitionQuery.processDefinitionKey(processKey);
 			}
-			
-			if(StringUtils.hasText(processName)) {
-				processDefinitionQuery = processDefinitionQuery.processDefinitionNameLike("%"+processName+"%");
+
+			if (StringUtils.hasText(processName)) {
+				processDefinitionQuery = processDefinitionQuery.processDefinitionNameLike("%" + processName + "%");
 			}
 		}
-		
-		
-		
-		//查询出总数据条数
+
+		// 查询出总数据条数
 		long rowTotal = processDefinitionQuery.count();
 		int pageIndex = page.getPageIndex();
 		int pageSize = page.getPageSize();
-		//查询出当前页的数据
-		List<ProcessDefinition> processDefinitions = processDefinitionQuery.active().orderByProcessDefinitionId().desc().listPage((pageIndex-1)*pageSize, pageSize);
-		
-		page.setRowTotal((int)rowTotal);
+		// 查询出当前页的数据
+		List<ProcessDefinition> processDefinitions = processDefinitionQuery.active().orderByProcessDefinitionId().desc()
+				.listPage((pageIndex - 1) * pageSize, pageSize);
+
+		page.setRowTotal((int) rowTotal);
 		page.setDatas(processDefinitions);
 		return page;
 	}
@@ -101,10 +100,10 @@ public class WorkflowManagerImpl implements WorkflowManager{
 
 	@Override
 	public void deleteProcessDefinition(String deploymentId) {
-		//非级联删除，
-		//repositoryService.deleteDeployment(deploymentId);
-		//true级联删除，如果该流程有启动过的实例也一同删除
-		repositoryService.deleteDeployment(deploymentId,true);
+		// 非级联删除，
+		// repositoryService.deleteDeployment(deploymentId);
+		// true级联删除，如果该流程有启动过的实例也一同删除
+		repositoryService.deleteDeployment(deploymentId, true);
 	}
 
 	/**
@@ -114,15 +113,45 @@ public class WorkflowManagerImpl implements WorkflowManager{
 	public void start(Workflow workflow) {
 		String businessKey = workflow.getBusinessKey();
 		String processDefinitionKey = workflow.getProcessDefinitionKey();
-		
+
 		Long userId = ContextUtil.getContext().getUserId();
-		Map<String,Object> variables = workflow.getVariables();
-		//启动流程的时候将当前用户设置到申请人内
+		Map<String, Object> variables = workflow.getVariables();
+		// 启动流程的时候将当前用户设置到申请人内
 		variables.put(APPLICANT, userId);
-		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processDefinitionKey, businessKey,variables);
-		
+		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processDefinitionKey, businessKey,
+				variables);
+
 		Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
 		taskService.complete(task.getId());
+	}
+
+	@Override
+	public boolean singal(Workflow workflow) {
+		Task task = taskService.createTaskQuery().taskId(workflow.getTaskId()).singleResult();
+
+		Map<String, Object> variables = new HashMap<String, Object>();
+		variables.put("transition", workflow.getTransition());
+
+		User user = ContextUtil.getContext().getUser();
+		String userId = user.getEmployeeName() + "[" + user.getLoginId() + "]";
+		// 设置用户
+		Authentication.setAuthenticatedUserId(userId);
+		// 添加审批意见
+		taskService.addComment(task.getId(), task.getProcessInstanceId(), workflow.getTransition(),
+				workflow.getAdvice());
+
+		// 完成任务
+		taskService.complete(task.getId(), variables);
+
+		// 检查流程是否结束了
+		ProcessInstance pi = runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId())
+				.singleResult();
+		if (pi == null) {
+			// 如果流程实例到了就表示流程结束了
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -131,21 +160,23 @@ public class WorkflowManagerImpl implements WorkflowManager{
 	@Override
 	public List<TaskInfo> findTaskList(String assignee, String processDefinitionKey) {
 		List<TaskInfo> taskInfoes = new ArrayList<TaskInfo>();
-		List<Task> list = taskService.createTaskQuery().processDefinitionKey(processDefinitionKey).taskAssignee(assignee).orderByTaskCreateTime().desc().list();
-		if(list!=null && list.size()>0) {
-			for(Task task:list) {
+		List<Task> list = taskService.createTaskQuery().processDefinitionKey(processDefinitionKey)
+				.taskAssignee(assignee).orderByTaskCreateTime().desc().list();
+		if (list != null && list.size() > 0) {
+			for (Task task : list) {
 				TaskInfo taskInfo = new TaskInfo();
-				ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult();
+				ProcessInstance processInstance = runtimeService.createProcessInstanceQuery()
+						.processInstanceId(task.getProcessInstanceId()).singleResult();
 				taskInfo.setTask(task);
 				taskInfo.setProcessInstance(processInstance);
 				taskInfo.setBusinessKey(processInstance.getBusinessKey());
-				if(StringUtils.hasText(processInstance.getBusinessKey())) {
+				if (StringUtils.hasText(processInstance.getBusinessKey())) {
 					taskInfo.setBizId(Long.parseLong(processInstance.getBusinessKey()));
 				}
 				taskInfoes.add(taskInfo);
 			}
 		}
-		
+
 		return taskInfoes;
 	}
 

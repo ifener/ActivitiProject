@@ -62,7 +62,7 @@ public class WorkFlowController extends BaseController {
 		}
 
 		System.out.println(file);
-		return "redirect:workflows";
+		return "redirect:list";
 	}
 
 	@GetMapping("/viewImage")

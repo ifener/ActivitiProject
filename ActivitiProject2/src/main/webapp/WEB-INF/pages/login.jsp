@@ -57,7 +57,7 @@
                 <input type="password" name="loginPassword" class="form-control" placeholder="密码" required="" />
               </div>
               <div>
-                <button class="btn btn-default submit" type="button" onclick="func_login();">登录</button>
+                <button class="btn btn-default submit" type="submit" onclick="func_login();">登录</button>
                 <a class="reset_pass" href="#"></a>
               </div>
 

@@ -9,7 +9,7 @@
     <title>流程管理</title>
     <jsp:include page="/WEB-INF/pages/headerjs.jsp"></jsp:include>
     <!-- bootstrap dialog -->
-    <link href="${ctx}/static/css/bootstrap-dialog.min.css" rel="stylesheet">s
+    <link href="${ctx}/static/css/bootstrap-dialog.min.css" rel="stylesheet" />
 </head>
 <body class="nav-md">
     <div class="container body">

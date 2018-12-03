@@ -10,7 +10,7 @@ public class BaseBO implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private BaseObject baseVO = null;
 
 	private Long[] ids = null;
@@ -30,6 +30,4 @@ public class BaseBO implements Serializable {
 	public void setIds(Long[] ids) {
 		this.ids = ids;
 	}
-	
-	
 }

@@ -7,8 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.wey.framework.activiti.bo.WorkflowBO;
 import com.wey.framework.activiti.constants.WorkflowStatus;
 import com.wey.framework.bo.refund.RefundBillBO;
 import com.wey.framework.controller.BaseController;
@@ -76,8 +78,19 @@ public class RefundBillController extends BaseController {
 					refundBill.setContent(content);
 				}
 			}
-			refundBillManager.saveAndStar(refundBill);
+			refundBillManager.saveAndStart(refundBill);
 			return "redirect:list";
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServiceException(e.getMessage());
+		}
+	}
+
+	@PostMapping("/saveAudit")
+	public String saveAudit(RefundBill refundBill, WorkflowBO workflowBO) {
+		try {
+			refundBillManager.saveAuditing(refundBill, workflowBO);
+			return "redirect:findTaskList";
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());

@@ -123,18 +123,18 @@
     <script src="${ctx}/static/js/bootstrap-paginator.js"></script>
     <script>
       $(function(){
-    	  $('input[name='dateRange']').daterangepicker({
+    	  $('input[name="dateRange"]').daterangepicker({
     		  autoUpdateInput: false,
               locale: {
                   cancelLabel: 'Clear'
               }
           });
     	  
-    	  $('input[name='dateRange']').on('apply.daterangepicker', function(ev, picker) {
+    	  $('input[name="dateRange"]').on('apply.daterangepicker', function(ev, picker) {
               $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
           });
 
-    	  $('input[name='dateRange']').on('cancel.daterangepicker', function(ev, picker) {
+    	  $('input[name="dateRange"]').on('cancel.daterangepicker', function(ev, picker) {
               $(this).val('');
           });
       });
