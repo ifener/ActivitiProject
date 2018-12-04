@@ -74,8 +74,18 @@
                                            ${refundBill.content}
                                         </div>
                                     </div>
+                                    
+                                    <div class="item form-group">
+									  	 <div class="col-xs-12">
+									         <c:import url="/workflow/hiscomments">
+									         	<c:param name="processKey" value="${processKey}"></c:param>
+									         	<c:param name="bizId" value="${refundBill.id}"></c:param>
+									         </c:import>
+									     </div>
+									</div>
+  
                                     <div class="form-group">
-                                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                        <div class="col-md-12 col-sm-12 col-xs-12 text-right">
                                             <button type="button" onclick="window.history.back();" class="btn btn-success">返回</button>
                                         </div>
                                     </div>

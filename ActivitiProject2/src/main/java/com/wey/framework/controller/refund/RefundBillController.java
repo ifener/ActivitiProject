@@ -62,6 +62,7 @@ public class RefundBillController extends BaseController {
 	public String view(@PathVariable("id") Long id, Model model) {
 		RefundBill refundBill = refundBillManager.get(id);
 		model.addAttribute("refundBill", refundBill);
+		model.addAttribute("processKey", RefundBillManager.PROCESS_NAME);
 		return custom();
 	}
 
@@ -118,6 +119,7 @@ public class RefundBillController extends BaseController {
 	public String audit(@PathVariable("id") Long id, Model model) {
 		RefundBill refundBill = refundBillManager.get(id);
 		model.addAttribute("refundBill", refundBill);
+		model.addAttribute("processKey", RefundBillManager.PROCESS_NAME);
 		return custom();
 	}
 

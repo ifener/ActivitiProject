@@ -205,7 +205,11 @@
 			<artifactId>activiti-bpmn-converter</artifactId>
 			<version>${activiti-spring.version}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.activiti</groupId>
+			<artifactId>activiti-image-generator</artifactId>
+			<version>${activiti-spring.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>de.odysseus.juel</groupId>
 			<artifactId>juel-impl</artifactId>

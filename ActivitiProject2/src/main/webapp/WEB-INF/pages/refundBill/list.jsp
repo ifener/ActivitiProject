@@ -8,10 +8,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>报销管理</title>
     <jsp:include page="/WEB-INF/pages/headerjs.jsp"></jsp:include>
-     <!-- bootstrap-daterangepicker -->
+    <!-- bootstrap-daterangepicker -->
     <link href="${ctx}/static/css/daterangepicker.css" rel="stylesheet">
-     <!-- bootstrap-datetimepicker -->
-     <link href="${ctx}/static/css/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
+    <!-- bootstrap-datetimepicker -->
+    <link href="${ctx}/static/css/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
+    <!-- bootstrap dialog -->
+    <link href="${ctx}/static/css/bootstrap-dialog.min.css" rel="stylesheet" />
 </head>
 <body class="nav-md">
     <div class="container body">
@@ -92,7 +94,12 @@
 						                          <td>${refundBill.subject}</td>
 						                          <td>${refundBill.refundAmount}</td>
 						                          <td>${refundBill.auditDesc}</td>
-						                          <td><a href="view/${refundBill.id}">查看</a></td>
+						                          <td>
+						                          	  <a href="view/${refundBill.id}">查看</a>
+						                          	  <c:if test="${refundBill.auditStatus==10 || refundBill.auditStatus==20}">
+						                          	  	  <a href="javascript:viewImage('RefundBill',${refundBill.id});">查看流程图</a>
+						                          	  </c:if>
+						                          </td>
 						                        </tr>
 					                        </c:forEach>
 					                      </tbody>
@@ -123,6 +130,7 @@
     <!-- Parsley -->
     <script src="${ctx}/static/js/parsleyjs/parsley.min.js"></script>
     <script src="${ctx}/static/js/bootstrap-paginator.js"></script>
+    <script src="${ctx}/static/js/bootstrap-dialog.min.js"></script>
     <script>
       $(function(){
     	  $('#dateRange').daterangepicker({
@@ -131,6 +139,15 @@
 			  }
 		  });
       });
+      
+      function viewImage(processKey,bizId){
+     	 var url = "${ctx}/workflow/currentProcessView?processKey="+processKey+"&bizId="+bizId;
+     	 BootstrapDialog.show({
+     		 title: '查看流程图',
+              message: $('<div></div>').load(url),
+              size:BootstrapDialog.SIZE_WIDE
+          });
+       }
     </script>
 </body>
 </html>

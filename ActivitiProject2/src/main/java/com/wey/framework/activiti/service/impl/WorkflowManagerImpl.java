@@ -2,25 +2,33 @@ package com.wey.framework.activiti.service.impl;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipInputStream;
 
+import org.activiti.bpmn.model.BpmnModel;
+import org.activiti.bpmn.model.GraphicInfo;
+import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.impl.identity.Authentication;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.repository.ProcessDefinitionQuery;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import com.wey.framework.activiti.bo.CommentBO;
 import com.wey.framework.activiti.bo.ProcessDefinitionBO;
 import com.wey.framework.activiti.model.TaskInfo;
 import com.wey.framework.activiti.model.Workflow;
@@ -41,6 +49,12 @@ public class WorkflowManagerImpl implements WorkflowManager {
 
 	@Autowired
 	private TaskService taskService;
+
+	@Autowired
+	private HistoryService historyService;
+
+	// @Autowired
+	// private DynamicBpmnService dynamicBpmnService;
 
 	private static final String APPLICANT = "applicant";
 
@@ -122,6 +136,10 @@ public class WorkflowManagerImpl implements WorkflowManager {
 				variables);
 
 		Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+
+		// 添加批注
+		addComment(task.getId(), task.getProcessInstanceId(), workflow.getApprove(), workflow.getAdvice());
+		// 提单时审批
 		taskService.complete(task.getId());
 	}
 
@@ -132,26 +150,42 @@ public class WorkflowManagerImpl implements WorkflowManager {
 		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put("transition", workflow.getTransition());
 
-		User user = ContextUtil.getContext().getUser();
-		String userId = user.getEmployeeName() + "[" + user.getLoginId() + "]";
-		// 设置用户
-		Authentication.setAuthenticatedUserId(userId);
-		// 添加审批意见
-		taskService.addComment(task.getId(), task.getProcessInstanceId(), workflow.getTransition(),
-				workflow.getAdvice());
-
+		// 添加批注
+		addComment(task.getId(), task.getProcessInstanceId(), workflow.getApprove(), workflow.getAdvice());
 		// 完成任务
 		taskService.complete(task.getId(), variables);
 
 		// 检查流程是否结束了
-		ProcessInstance pi = runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId())
-				.singleResult();
-		if (pi == null) {
+		// ProcessInstance pi =
+		// runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId())
+		// .singleResult();
+
+		long count = historyService.createHistoricProcessInstanceQuery().finished()
+				.processDefinitionId(task.getProcessInstanceId()).count();
+
+		if (count > 0) {
 			// 如果流程实例到了就表示流程结束了
 			return true;
 		}
 
 		return false;
+	}
+
+	/**
+	 * 添加批注
+	 * 
+	 * @param taskId
+	 * @param processInstanceId
+	 * @param type
+	 * @param advice
+	 */
+	private void addComment(String taskId, String processInstanceId, String type, String advice) {
+		User user = ContextUtil.getContext().getUser();
+		String userId = user.getEmployeeName() + "[" + user.getLoginId() + "]";
+		// 设置用户
+		Authentication.setAuthenticatedUserId(userId);
+		// 添加审批意见
+		taskService.addComment(taskId, processInstanceId, type, advice);
 	}
 
 	/**
@@ -178,6 +212,90 @@ public class WorkflowManagerImpl implements WorkflowManager {
 		}
 
 		return taskInfoes;
+	}
+
+	/**
+	 * 查找历史的批注信息
+	 */
+	@Override
+	public List<CommentBO> findHistoricalComments(String processKey, Long bizId) {
+		try {
+			List<CommentBO> list = new ArrayList<CommentBO>();
+			HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery()
+					.processInstanceBusinessKey(bizId.toString()).processDefinitionKey(processKey).singleResult();
+			if (historicProcessInstance != null) {
+				List<Comment> comments = taskService.getProcessInstanceComments(historicProcessInstance.getId());
+
+				comments.sort(new Comparator<Comment>() {
+
+					@Override
+					public int compare(Comment o1, Comment o2) {
+						return o1.getTime().before(o2.getTime()) ? -1 : 1;
+					}
+				});
+
+				if (comments != null && comments.size() > 0) {
+					for (Comment comment : comments) {
+						CommentBO commentBO = new CommentBO();
+						commentBO.setComment(comment);
+						HistoricTaskInstance taskInstance = historyService.createHistoricTaskInstanceQuery()
+								.taskId(comment.getTaskId()).singleResult();
+						if (taskInstance != null) {
+							commentBO.setTaskName(taskInstance.getName());
+						}
+						list.add(commentBO);
+					}
+				}
+			}
+
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServiceException("获取历史批注失败:" + e.getMessage());
+		}
+	}
+
+	/**
+	 * 通过流程定义KEY跟业务ID获取流程定义
+	 */
+	@Override
+	public ProcessDefinition findProcessDefinitionByBizId(String processKey, Long bizId) {
+		try {
+			ProcessInstance processInstance = runtimeService.createProcessInstanceQuery()
+					.processInstanceBusinessKey(bizId.toString()).processDefinitionKey(processKey).singleResult();
+
+			return repositoryService.createProcessDefinitionQuery()
+					.processDefinitionId(processInstance.getProcessDefinitionId()).singleResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServiceException("获取数据失败:" + e.getMessage());
+		}
+	}
+
+	@Override
+	public Map<String, Object> findCurrentTaskCoordinate(String processKey, Long bizId) {
+		try {
+			Map<String, Object> maps = new HashMap<String, Object>();
+			ProcessInstance processInstance = runtimeService.createProcessInstanceQuery()
+					.processInstanceBusinessKey(bizId.toString()).processDefinitionKey(processKey).singleResult();
+
+			BpmnModel bpmnModel = repositoryService.getBpmnModel(processInstance.getProcessDefinitionId());
+
+			Task task = taskService.createTaskQuery().processInstanceBusinessKey(bizId.toString())
+					.processDefinitionKey(processKey).singleResult();
+
+			GraphicInfo graphicInfo = bpmnModel.getGraphicInfo(task.getTaskDefinitionKey());
+
+			maps.put("x", graphicInfo.getX());
+			maps.put("y", graphicInfo.getY());
+			maps.put("width", graphicInfo.getWidth());
+			maps.put("height", graphicInfo.getHeight());
+
+			return maps;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServiceException("获取数据失败:" + e.getMessage());
+		}
 	}
 
 }

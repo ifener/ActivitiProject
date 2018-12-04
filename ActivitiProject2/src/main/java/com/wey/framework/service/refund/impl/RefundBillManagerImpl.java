@@ -69,6 +69,11 @@ public class RefundBillManagerImpl extends GenericManagerImpl<RefundBill, Long> 
 			// CEO
 			workflow.addVariables("ceo", userManager.findUserIdByDeptIdAndPositionId(0L, 5L));
 
+			// 提单
+			workflow.setApprove(Constants.SUBMIT_FORM);
+			workflow.setAdvice(Constants.APPLICANT_SUBMIT_FORM);
+
+			// 启动流程
 			workflowManager.start(workflow);
 			return refundBill;
 		} catch (Exception e) {
@@ -92,7 +97,7 @@ public class RefundBillManagerImpl extends GenericManagerImpl<RefundBill, Long> 
 			Task task = null;
 			if (taskInfoList != null && taskInfoList.size() > 0) {
 				for (TaskInfo taskInfo : taskInfoList) {
-					if (taskInfo.getBizId() == refundBill.getId()) {
+					if (taskInfo.getBizId().equals(refundBill.getId())) {
 						task = taskInfo.getTask();
 						break;
 					}

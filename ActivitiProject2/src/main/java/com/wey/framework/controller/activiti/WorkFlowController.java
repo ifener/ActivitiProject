@@ -3,11 +3,14 @@ package com.wey.framework.controller.activiti;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
 import java.util.zip.ZipInputStream;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
+import org.activiti.engine.repository.ProcessDefinition;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.wey.framework.activiti.bo.CommentBO;
 import com.wey.framework.activiti.bo.ProcessDefinitionBO;
 import com.wey.framework.activiti.service.WorkflowManager;
 import com.wey.framework.controller.BaseController;
@@ -129,6 +133,29 @@ public class WorkFlowController extends BaseController {
 	public String deleteProcessDefinition(@RequestParam("deploymentId") String deploymentId) {
 		workflowManager.deleteProcessDefinition(deploymentId);
 		return "redirect:workflows";
+	}
+
+	@GetMapping("/hiscomments")
+	public String hiscomments(String processKey, Long bizId, Model model) {
+		List<CommentBO> comments = workflowManager.findHistoricalComments(processKey, bizId);
+		model.addAttribute("comments", comments);
+		return custom();
+	}
+
+	@GetMapping("/currentProcessView")
+	public String currentProcessView(String processKey, Long bizId, Model model) {
+		// 获取流程定义
+		ProcessDefinition processDefinition = workflowManager.findProcessDefinitionByBizId(processKey, bizId);
+
+		// 获取坐标
+		Map<String, Object> coordinate = workflowManager.findCurrentTaskCoordinate(processKey, bizId);
+
+		model.addAttribute("deploymentId", processDefinition.getDeploymentId());
+		// 流程图片
+		model.addAttribute("resourceName", processDefinition.getDiagramResourceName());
+		model.addAttribute("local", coordinate);
+
+		return custom();
 	}
 
 	/**

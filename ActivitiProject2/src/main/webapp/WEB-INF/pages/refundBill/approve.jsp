@@ -1,5 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/pages/taglib.jsp" %>
+  <div class="item form-group">
+  	 <label class="col-md-3 col-sm-3 col-xs-12 control-label" for="textarea">
+  	 </label>
+  	 <div class="col-md-8 col-sm-8 col-xs-12">
+  	 	<c:import url="/workflow/hiscomments">
+         	<c:param name="processKey" value="${processKey}"></c:param>
+         	<c:param name="bizId" value="${refundBill.id}"></c:param>
+         </c:import>
+  	 </div>
+  </div>
+                                    
  <div class="item form-group">
     <label class="col-md-3 col-sm-3 col-xs-12 control-label" for="textarea">
        	 审批结果<span class="required">*</span>
